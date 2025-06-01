@@ -24,16 +24,19 @@
         <section class="user-info-section">
             <div class="user-avatar">
                 <img src="assets/img/user-default.png" alt="Foto de perfil" id="userAvatar">
-                <button class="edit-avatar-btn">
+                <button class="edit-avatar-btn" id="editAvatarBtn" type="button">
                     <span class="material-icons">edit</span>
                 </button>
+                <input type="file" id="avatarInput" accept="image/*" style="display:none;">
             </div>
             
             <div class="user-details">
-                <h2 id="userName">María González</h2>
-                <p class="user-code" id="userCode">ALUMNO-20230045</p>
-                <p class="user-email" id="userEmail">maria.gonzalez@tecs.edu</p>
-                <p class="user-career" id="userCareer">Ingeniería en Sistemas</p>
+                <h2 id="userName"></h2>
+                <p class="user-code" id="userCode"></p>
+                <p class="user-email" id="userEmail"></p>
+                <p class="user-career" id="userCareer"></p>
+                <!-- Agrega esto donde quieras mostrar el puesto/rol -->
+                <p class="user-role" id="userRole"></p>
             </div>
         </section>
 
@@ -41,13 +44,11 @@
         <section class="barcode-section">
             <div class="section-header">
                 <h2>Mi Código de Acceso</h2>
-                <button id="refreshBarcode" class="icon-btn" aria-label="Actualizar código">
-                    <span class="material-icons">refresh</span>
-                </button>
             </div>
             
             <div class="barcode-container">
                 <svg id="barcode"></svg>
+                <p id="barcodeText"></p>
                 <p class="barcode-hint">Presenta este código en los lectores del campus</p>
             </div>
             
@@ -87,6 +88,6 @@
     </main>
 
     <script src="js/barcode.js" type="module"></script>
-    <script src="js/profile.js" type="module"></script>
+    <script src="js/profile.js"></script>
 </body>
 </html>

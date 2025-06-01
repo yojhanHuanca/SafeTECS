@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Registro - SafeTECS</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="auth-container">
+        <div class="auth-card">
+            <div class="logo-container">
+                <img src="assets/img/logo-white.svg" alt="SafeTECS" class="logo">
+                <h1 class="app-title">Crear Cuenta</h1>
+            </div>
+            <form id="registerForm" class="auth-form">
+                <div id="error-message" style="color: #e74c3c; text-align:center; margin-bottom:10px; display:none;"></div>
+                <div class="input-group floating">
+                    <input type="text" id="nombre" name="nombre" required>
+                    <label for="nombre">Nombre Completo</label>
+                    <span class="material-icons icon">person</span>
+                    <div class="underline"></div>
+                </div>
+                <div class="input-group floating">
+                    <input type="email" id="correo" name="correo" required>
+                    <label for="correo">Correo Institucional</label>
+                    <span class="material-icons icon">email</span>
+                    <div class="underline"></div>
+                </div>
+                <div class="input-group floating">
+                    <input type="text" id="codigo" name="codigo" required>
+                    <label for="codigo">Código de Alumno</label>
+                    <span class="material-icons icon">badge</span>
+                    <div class="underline"></div>
+                </div>
+                <div class="input-group floating">
+                    <input type="text" id="carrera" name="carrera" required>
+                    <label for="carrera">Carrera</label>
+                    <span class="material-icons icon">school</span>
+                    <div class="underline"></div>
+                </div>
+                <div class="input-group floating">
+                    <select id="rol" name="rol" required>
+                        <option value="">Selecciona un rol</option>
+                        <option value="estudiante">Estudiante</option>
+                        <option value="profesor">Profesor</option>
+                        <option value="administrativo">Personal Administrativo</option>
+                    </select>
+                    <label for="rol">Rol</label>
+                    <span class="material-icons icon">groups</span>
+                    <div class="underline"></div>
+                </div>
+                <div class="input-group floating">
+                    <input type="password" id="contrasena" name="contrasena" required>
+                    <label for="contrasena">Contraseña</label>
+                    <span class="material-icons icon">lock</span>
+                    <div class="underline"></div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-rounded">
+                    <span class="btn-text">Registrarse</span>
+                    <div class="spinner"></div>
+                </button>
+                <div class="auth-footer">
+                    <p>¿Ya tienes cuenta? <a href="index.html">Inicia sesión</a></p>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="js/registro.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+    "php.validate.executablePath": "",
+    "sqltools.connections": [
+        {
+            "oracleOptions": {
+                "privilege": "Normal",
+                "thickMode": false,
+                "autoCommit": false,
+                "lowerCase": false,
+                "limitPrefetchRows": false
+            },
+            "previewLimit": 50,
+            "server": "169.254.46.42",
+            "port": 1521,
+            "askForPassword": true,
+            "driver": "Oracle",
+            "name": "YOJHAN@XE",
+            "database": "XE",
+            "username": "C##NANO"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

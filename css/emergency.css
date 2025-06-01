@@ -1,23 +1,28 @@
+/* Paleta y variables */
 :root {
     --danger: #d00000;
-    --danger-light: #ffebee;
+    --danger-light: #ffeaea;
     --danger-dark: #b71c1c;
     --success: #38b000;
-    --success-light: #ebfbee;
+    --success-light: #eaffea;
     --warning: #ffaa00;
     --warning-light: #fff3e0;
     --white: #ffffff;
-    --gray-100: #f8f9fa;
-    --gray-800: #2b2d42;
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --radius-lg: 20px;
-    --radius-md: 12px;
-    --radius-sm: 8px;
-    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --gray-100: #f4f7fa;
+    --gray-800: #232b3b;
+    --gray-500: #6b7a90;
+    --glass-bg: rgba(255,255,255,0.75);
+    --glass-blur: blur(12px);
+    --shadow-lg: 0 8px 32px rgba(208,0,0,0.18);
+    --shadow-md: 0 4px 16px rgba(30,34,90,0.10);
+    --shadow-sm: 0 1.5px 6px rgba(30,34,90,0.07);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 10px;
+    --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* Base */
+/* Reset */
 * {
     margin: 0;
     padding: 0;
@@ -26,14 +31,12 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--gray-100);
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #f4f7fa 60%, #e3eaf2 100%);
     color: var(--gray-800);
+    min-height: 100vh;
     line-height: 1.6;
-}
-
-.hidden {
-    display: none !important;
+    overflow-x: hidden;
 }
 
 /* Header */
@@ -42,66 +45,113 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 60px;
-    background-color: var(--white);
+    height: 64px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
     display: flex;
     align-items: center;
-    padding: 0 1rem;
+    padding: 0 1.2rem;
     box-shadow: var(--shadow-sm);
     z-index: 100;
+    border-bottom-left-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
 }
 
 .back-btn {
-    color: var(--gray-800);
+    color: var(--danger);
     margin-right: 1rem;
     display: flex;
+    font-size: 2rem;
+    transition: color 0.2s;
+}
+
+.back-btn:hover {
+    color: var(--danger-dark);
 }
 
 .emergency-header h1 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--danger);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--danger-dark);
+    letter-spacing: -1px;
 }
 
-/* Contenedor Principal */
+/* Main container */
 .emergency-container {
-    padding: 1.5rem;
-    padding-bottom: 2rem;
-    max-width: 600px;
-    margin: 0 auto;
+    padding: 2.2rem 1.5rem 2.5rem 1.5rem;
+    max-width: 440px;
+    margin: 2.5rem auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    background: var(--glass-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: var(--glass-blur);
+    position: relative;
+    animation: fadeIn 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
 }
 
 /* Estado de Emergencia */
 .emergency-status {
-    background-color: var(--success-light);
+    background: linear-gradient(90deg, var(--success-light) 60%, #eaffea 100%);
     border-radius: var(--radius-md);
-    padding: 1rem;
-    margin-bottom: 2rem;
+    padding: 1.1rem 1rem;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
-    border: 1px solid var(--success);
+    gap: 0.9rem;
+    border: 1.5px solid var(--success);
+    box-shadow: var(--shadow-sm);
+    font-size: 1.08rem;
+    font-weight: 500;
+    animation: statusIn 0.7s;
+}
+
+@keyframes statusIn {
+    from { opacity: 0; transform: scale(0.95);}
+    to { opacity: 1; transform: scale(1);}
 }
 
 .emergency-status .status-icon {
     color: var(--success);
+    font-size: 2.1rem;
+    animation: pulseSuccess 1.5s infinite;
+}
+
+@keyframes pulseSuccess {
+    0%,100% { filter: brightness(1);}
+    50% { filter: brightness(1.3);}
 }
 
 .emergency-status.alert {
-    background-color: var(--danger-light);
+    background: linear-gradient(90deg, var(--danger-light) 60%, #fff0f0 100%);
     border-color: var(--danger);
-    animation: pulse 1.5s infinite;
+    animation: pulseAlert 1.2s infinite, statusIn 0.7s;
+}
+
+@keyframes pulseAlert {
+    0%,100% { box-shadow: 0 0 0 0 rgba(208,0,0,0.18);}
+    50% { box-shadow: 0 0 0 12px rgba(208,0,0,0.10);}
 }
 
 .emergency-status.alert .status-icon {
     color: var(--danger);
+    animation: shake 0.7s infinite;
 }
 
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
+@keyframes shake {
+    0%,100% { transform: translateX(0);}
+    20% { transform: translateX(-2px);}
+    40% { transform: translateX(2px);}
+    60% { transform: translateX(-2px);}
+    80% { transform: translateX(2px);}
 }
 
 /* Botón de Pánico */
@@ -114,7 +164,7 @@ body {
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    background-color: var(--danger);
+    background: radial-gradient(circle at 60% 40%, #ff4e4e 0%, #d00000 80%);
     color: var(--white);
     border: none;
     display: flex;
@@ -122,60 +172,71 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(208, 0, 0, 0.3);
+    box-shadow: 0 10px 32px rgba(208, 0, 0, 0.25), 0 2px 8px rgba(208,0,0,0.10);
     transition: var(--transition);
     margin: 0 auto 1rem;
     position: relative;
     overflow: hidden;
+    font-size: 1.1rem;
+    animation: panicPulse 1.5s infinite;
+    user-select: none;
 }
 
-.panic-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    transform: scale(0);
-    transition: var(--transition);
+@keyframes panicPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(208,0,0,0.18), 0 10px 32px rgba(208,0,0,0.25);}
+    50% { box-shadow: 0 0 0 18px rgba(208,0,0,0.10), 0 10px 32px rgba(208,0,0,0.25);}
 }
 
-.panic-button:active::before {
-    transform: scale(1);
+.panic-button:active {
+    transform: scale(0.97);
+    filter: brightness(0.95);
 }
 
 .panic-button .material-icons {
-    font-size: 4rem;
-    margin-bottom: 0.5rem;
+    font-size: 4.2rem;
+    margin-bottom: 0.6rem;
+    animation: panicIcon 1.5s infinite;
+}
+
+@keyframes panicIcon {
+    0%,100% { transform: scale(1);}
+    50% { transform: scale(1.13);}
 }
 
 .panic-button .button-text {
-    font-size: 1.1rem;
-    font-weight: 500;
+    font-size: 1.18rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(208,0,0,0.10);
 }
 
 .panic-instructions {
-    color: var(--gray-800);
-    font-size: 0.9rem;
-    max-width: 250px;
+    color: var(--gray-500);
+    font-size: 1.01rem;
+    max-width: 260px;
     margin: 0 auto;
+    background: rgba(255,255,255,0.7);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.7rem;
+    box-shadow: 0 1px 4px rgba(208,0,0,0.04);
 }
 
 /* Información de Emergencia */
 .emergency-info {
-    background-color: var(--white);
+    background: var(--glass-bg);
     border-radius: var(--radius-md);
-    padding: 1.5rem;
+    padding: 1.5rem 1.1rem;
     margin-bottom: 2rem;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
+    backdrop-filter: var(--glass-blur);
+    animation: fadeIn 0.7s;
 }
 
 .info-item {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 1.1rem;
+    margin-bottom: 1.3rem;
+    align-items: flex-start;
 }
 
 .info-item:last-child {
@@ -184,39 +245,48 @@ body {
 
 .info-item .material-icons {
     color: var(--danger);
-    font-size: 1.5rem;
+    font-size: 2rem;
+    background: #fff0f0;
+    border-radius: 50%;
+    padding: 0.4rem;
+    box-shadow: 0 1px 4px rgba(208,0,0,0.07);
 }
 
 .info-item h3 {
-    font-size: 0.95rem;
-    margin-bottom: 0.25rem;
+    font-size: 1.05rem;
+    margin-bottom: 0.18rem;
     color: var(--gray-800);
+    font-weight: 600;
 }
 
 .info-item p {
-    font-size: 0.9rem;
+    font-size: 0.97rem;
     color: var(--gray-500);
+    font-weight: 500;
 }
 
 /* Contactos de Emergencia */
 .emergency-contacts {
-    background-color: var(--white);
+    background: var(--glass-bg);
     border-radius: var(--radius-md);
-    padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
+    padding: 1.5rem 1.1rem;
+    box-shadow: var(--shadow-md);
+    backdrop-filter: var(--glass-blur);
+    animation: fadeIn 0.7s;
 }
 
 .emergency-contacts h2 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
+    font-size: 1.13rem;
+    font-weight: 700;
+    margin-bottom: 1.1rem;
     color: var(--gray-800);
+    letter-spacing: 0.2px;
 }
 
 .contacts-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    gap: 1.1rem;
 }
 
 .contact-card {
@@ -224,78 +294,88 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 1.1rem 0.5rem;
     border-radius: var(--radius-sm);
     text-decoration: none;
     color: var(--white);
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.05rem;
     transition: var(--transition);
-    min-height: 80px;
+    min-height: 90px;
+    box-shadow: 0 2px 12px rgba(30,34,90,0.10);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #232b3b 60%, #1976d2 100%);
+    border: none;
 }
 
 .contact-card .material-icons {
-    font-size: 1.75rem;
+    font-size: 2.1rem;
     margin-bottom: 0.5rem;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.10));
 }
 
 .contact-card.police {
-    background-color: #1976d2;
+    background: linear-gradient(135deg, #1976d2 60%, #232b3b 100%);
 }
 
 .contact-card.medical {
-    background-color: #d32f2f;
+    background: linear-gradient(135deg, #d32f2f 60%, #b71c1c 100%);
 }
 
 .contact-card.security {
-    background-color: #388e3c;
+    background: linear-gradient(135deg, #388e3c 60%, #232b3b 100%);
 }
 
 .contact-card.contact {
-    background-color: #7b1fa2;
+    background: linear-gradient(135deg, #7b1fa2 60%, #232b3b 100%);
 }
 
 .contact-card:active {
-    transform: translateY(2px);
+    transform: scale(0.97);
+    filter: brightness(0.95);
+    box-shadow: 0 1px 4px rgba(30,34,90,0.10);
 }
 
 /* Modal de Confirmación */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(30,34,90,0.28);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
     padding: 1rem;
+    animation: fadeIn 0.3s;
 }
 
 .modal-content {
-    background-color: var(--white);
+    background: var(--glass-bg);
     border-radius: var(--radius-md);
-    padding: 1.5rem;
+    padding: 2rem 1.2rem 1.5rem 1.2rem;
     width: 100%;
-    max-width: 400px;
+    max-width: 370px;
     text-align: center;
-    animation: modalIn 0.3s ease;
+    box-shadow: var(--shadow-md);
+    backdrop-filter: var(--glass-blur);
+    animation: modalIn 0.3s;
 }
 
 @keyframes modalIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
 }
 
 .modal-content h2 {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
-    color: var(--danger);
+    color: var(--danger-dark);
+    font-weight: 700;
 }
 
 .modal-content p {
-    font-size: 0.9rem;
+    font-size: 1.01rem;
     color: var(--gray-500);
     margin-bottom: 1.5rem;
 }
@@ -307,41 +387,71 @@ body {
 
 .btn {
     flex: 1;
-    padding: 0.875rem;
+    padding: 0.95rem 0.5rem;
     border-radius: var(--radius-md);
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.05rem;
     cursor: pointer;
     transition: var(--transition);
+    border: none;
+    outline: none;
+    box-shadow: 0 1px 4px rgba(30,34,90,0.07);
 }
 
 .btn-outline {
-    background-color: transparent;
-    color: var(--gray-800);
-    border: 2px solid var(--gray-200);
+    background: transparent;
+    color: var(--danger-dark);
+    border: 2px solid var(--danger-light);
+}
+
+.btn-outline:hover, .btn-outline:focus {
+    background: var(--danger-light);
 }
 
 .btn-danger {
-    background-color: var(--danger);
+    background: linear-gradient(135deg, #d00000 60%, #b71c1c 100%);
     color: var(--white);
     border: none;
 }
 
-.btn-danger:active {
-    background-color: var(--danger-dark);
+.btn-danger:hover, .btn-danger:focus {
+    background: linear-gradient(135deg, #b71c1c 60%, #d00000 100%);
+    color: #fff;
+}
+
+/* Utilidades */
+.hidden {
+    display: none !important;
 }
 
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
     .emergency-container {
-        padding: 1rem;
+        max-width: 100vw;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 1.2rem 0.2rem 2rem 0.2rem;
     }
-    
     .panic-button {
-        width: 180px;
-        height: 180px;
+        width: 150px;
+        height: 150px;
+        font-size: 1rem;
     }
-    
     .contacts-grid {
         grid-template-columns: 1fr;
     }
+    .modal-content {
+        padding: 1.3rem 0.5rem 1rem 0.5rem;
+    }
+}
+
+/* Scrollbar moderno */
+::-webkit-scrollbar {
+    width: 8px;
+    background: #f0f2f5;
+}
+::-webkit-scrollbar-thumb {
+    background: #e3eaf2;
+    border-radius: 8px;
 }

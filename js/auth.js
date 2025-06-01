@@ -4,6 +4,7 @@ class AuthUI {
         this.emailInput = document.getElementById('email');
         this.passwordInput = document.getElementById('password');
         this.submitBtn = document.querySelector('.btn');
+        this.errorDiv = document.getElementById('error-message');
         this.init();
     }
 
@@ -77,26 +78,32 @@ class AuthUI {
 
     async handleSubmit(e) {
         e.preventDefault();
-        
+
+        // Limpiar mensaje de error general
+        this.errorDiv.style.display = 'none';
+        this.errorDiv.textContent = '';
+
         const isEmailValid = this.validateEmail();
         const isPasswordValid = this.validatePassword();
-        
+
         if (!isEmailValid || !isPasswordValid) return;
-        
+
         try {
             this.setLoading(true);
-            
+
             // Simular autenticación
             await this.authenticate({
                 email: this.emailInput.value.trim(),
                 password: this.passwordInput.value
             });
-            
+
             // Redireccionar
             window.location.href = 'dashboard.html';
-            
+
         } catch (error) {
-            this.showToast(error.message, 'error');
+            // Mostrar error general en el div
+            this.errorDiv.textContent = error.message;
+            this.errorDiv.style.display = 'block';
         } finally {
             this.setLoading(false);
         }
@@ -105,13 +112,16 @@ class AuthUI {
     async authenticate(credentials) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                // Simular error aleatorio (solo para demo)
-                if (Math.random() > 0.9) {
-                    reject(new Error('Error de conexión con el servidor'));
-                } else {
+                // Solo acepta este usuario demo
+                if (
+                    credentials.email === 'admin@ejemplo.com' &&
+                    credentials.password === '12345678'
+                ) {
                     resolve({ token: 'fake-jwt-token' });
+                } else {
+                    reject(new Error('Correo o contraseña incorrectos.'));
                 }
-            }, 1500);
+            }, 1000);
         });
     }
 
@@ -144,18 +154,6 @@ class AuthUI {
         inputGroup.classList.remove('error');
         const errorElement = inputGroup.querySelector('.error-message');
         if (errorElement) errorElement.textContent = '';
-    }
-
-    showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.classList.add('fade-out');
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
     }
 }
 

@@ -83,5 +83,44 @@ class ProfileManager {
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
-    new ProfileManager();
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    if (!usuario) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    document.getElementById('userName').textContent = usuario.nombre || '';
+    document.getElementById('userEmail').textContent = usuario.correo || '';
+    document.getElementById('userCode').textContent = usuario.codigo || '';
+    document.getElementById('userCareer').textContent = usuario.carrera || '';
+    document.getElementById('userRole').textContent = usuario.rol || '';
+
+    const barcodeText = document.getElementById('barcodeText');
+    barcodeText.textContent = usuario.codigo || '';
+
+    // Generar código de barras real
+    if (usuario.codigo && window.JsBarcode) {
+        JsBarcode("#barcode", usuario.codigo, {
+            format: "CODE128",
+            lineColor: "#222",
+            width: 2,
+            height: 60,
+            displayValue: false // El texto lo pones tú abajo
+        });
+    }
+
+    document.getElementById('editAvatarBtn').addEventListener('click', function() {
+        document.getElementById('avatarInput').click();
+    });
+
+    document.getElementById('avatarInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                document.getElementById('userAvatar').src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 });

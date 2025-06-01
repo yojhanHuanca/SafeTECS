@@ -59,12 +59,17 @@ class Dashboard {
     }
 
     loadUserData() {
-        // Simular carga de datos del usuario
-        setTimeout(() => {
-            document.getElementById('userName').textContent = 'María';
-            document.getElementById('sidebarUserName').textContent = 'María González';
-            document.getElementById('sidebarUserCode').textContent = 'ALUMNO-20230045';
-        }, 300);
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        if (usuario) {
+            const userName = document.getElementById('userName');
+            if (userName) userName.textContent = usuario.nombre;
+
+            const sidebarUserName = document.getElementById('sidebarUserName');
+            if (sidebarUserName) sidebarUserName.textContent = usuario.nombre;
+
+            const sidebarUserCode = document.getElementById('sidebarUserCode');
+            if (sidebarUserCode) sidebarUserCode.textContent = usuario.codigo || 'Sin código';
+        }
     }
 
     loadRecentAccess() {
