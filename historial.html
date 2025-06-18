@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Historial - SafeTECS</title>
+    <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/historial.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -22,30 +23,31 @@
 
     <!-- Filtros Desplegables -->
     <div class="filters-dropdown hidden" id="filtersDropdown">
-        <div class="filter-group">
+        <div class="filter-group form-group">
             <label for="startDate">Desde:</label>
-            <input type="date" id="startDate" class="filter-input">
+            <input type="date" id="startDate" class="filter-input form-control">
         </div>
-        <div class="filter-group">
+        <div class="filter-group form-group">
             <label for="endDate">Hasta:</label>
-            <input type="date" id="endDate" class="filter-input">
+            <input type="date" id="endDate" class="filter-input form-control">
         </div>
-        <div class="filter-group">
+        <div class="filter-group form-group">
             <label for="accessType">Tipo:</label>
-            <select id="accessType" class="filter-input">
+            <select id="accessType" class="filter-input form-control">
                 <option value="all">Todos</option>
                 <option value="entry">Entradas</option>
                 <option value="exit">Salidas</option>
             </select>
         </div>
         <div class="filter-actions">
-            <button id="resetFilters" class="btn-outline">Limpiar</button>
-            <button id="applyFilters" class="btn-primary">Aplicar</button>
+            <button id="resetFilters" class="btn btn-outline">Limpiar</button>
+            <button id="applyFilters" class="btn btn-primary">Aplicar</button>
         </div>
     </div>
 
     <!-- Contenido Principal -->
     <main class="history-container">
+        <div id="historial-error-message" class="error-message" style="display:none;"></div>
         <!-- Estado de Carga -->
         <div class="loading-state" id="loadingState">
             <div class="spinner"></div>

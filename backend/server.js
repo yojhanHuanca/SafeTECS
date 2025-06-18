@@ -10,7 +10,7 @@ app.use(express.json());
 const dbConfig = {
   user: 'C##NANO',
   password: 'Nano123', // o la contraseña que usas para C##NANO
-  connectString: '169.254.46.42:1521/XE'
+  connectString: 'localhost:1521/XE' // Changed IP to localhost
 };
 
 // Endpoint para registrar usuario y código de barras
