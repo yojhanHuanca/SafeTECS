@@ -1,100 +1,143 @@
+// js/dashboard.js
+import { ApiService } from '../services/ApiService.js'; // Prepare for future API calls
+import { UIUtils } from '../utils/UIUtils.js';
+
 class Dashboard {
     constructor() {
-        this.sidebar = document.getElementById('sidebar');
-        this.sidebarOverlay = document.getElementById('sidebarOverlay');
-        this.menuBtn = document.getElementById('menuBtn');
-        this.closeSidebarBtn = document.getElementById('closeSidebar');
-        this.notificationsBtn = document.getElementById('notificationsBtn');
-        this.logoutBtn = document.getElementById('logoutBtn');
+        this.elements = {
+            sidebar: document.getElementById('sidebar'),
+            sidebarOverlay: document.getElementById('sidebarOverlay'),
+            menuBtn: document.getElementById('menuBtn'),
+            closeSidebarBtn: document.getElementById('closeSidebar'),
+            notificationsBtn: document.getElementById('notificationsBtn'),
+            logoutBtn: document.getElementById('logoutBtn'),
+            userNameDisplay: document.getElementById('userName'), // For header
+            sidebarUserNameDisplay: document.getElementById('sidebarUserName'), // For sidebar
+            sidebarUserCodeDisplay: document.getElementById('sidebarUserCode'), // For sidebar
+            recentAccessContainer: document.querySelector('.access-list'), // For recent activity
+            pageErrorMessage: document.getElementById('page-error-message') // For general errors
+            // Add a main content loader if needed: e.g. mainContentLoader: document.getElementById('main-content-loader')
+        };
         this.init();
     }
 
     init() {
         this.setupEventListeners();
-        this.loadUserData();
-        this.loadRecentAccess();
+        this.loadDashboardData();
+    }
+
+    async loadDashboardData() {
+        // Example: Show a general page loader if you have one
+        // if (this.elements.mainContentLoader) this.elements.mainContentLoader.style.display = 'flex';
+
+        try {
+            await this.loadUserData(); // Still from localStorage for now
+            await this.loadRecentAccess(); // Simulated
+        } catch (error) {
+            if (this.elements.pageErrorMessage) {
+                UIUtils.displayMessage(this.elements.pageErrorMessage, error.message || 'Error al cargar datos del dashboard.', 'error');
+            } else {
+                UIUtils.showToast(error.message || 'Error al cargar datos del dashboard.', 'error');
+            }
+        } finally {
+            // if (this.elements.mainContentLoader) this.elements.mainContentLoader.style.display = 'none';
+        }
     }
 
     setupEventListeners() {
-        // Toggle sidebar
-        this.menuBtn.addEventListener('click', this.openSidebar.bind(this));
-        this.closeSidebarBtn.addEventListener('click', this.closeSidebar.bind(this));
-        this.sidebarOverlay.addEventListener('click', this.closeSidebar.bind(this));
-
-        // Logout
-        this.logoutBtn.addEventListener('click', this.handleLogout.bind(this));
-
-        // Notifications
-        this.notificationsBtn.addEventListener('click', this.showNotifications.bind(this));
-
-        // Swipe to close sidebar
+        if (this.elements.menuBtn) this.elements.menuBtn.addEventListener('click', this.openSidebar.bind(this));
+        if (this.elements.closeSidebarBtn) this.elements.closeSidebarBtn.addEventListener('click', this.closeSidebar.bind(this));
+        if (this.elements.sidebarOverlay) this.elements.sidebarOverlay.addEventListener('click', this.closeSidebar.bind(this));
+        if (this.elements.logoutBtn) this.elements.logoutBtn.addEventListener('click', this.handleLogout.bind(this));
+        if (this.elements.notificationsBtn) this.elements.notificationsBtn.addEventListener('click', this.showNotifications.bind(this));
         this.setupSwipeGestures();
     }
 
     openSidebar() {
-        this.sidebar.classList.add('open');
-        this.sidebarOverlay.classList.add('open');
+        if (this.elements.sidebar) this.elements.sidebar.classList.add('open');
+        if (this.elements.sidebarOverlay) this.elements.sidebarOverlay.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
 
     closeSidebar() {
-        this.sidebar.classList.remove('open');
-        this.sidebarOverlay.classList.remove('open');
+        if (this.elements.sidebar) this.elements.sidebar.classList.remove('open');
+        if (this.elements.sidebarOverlay) this.elements.sidebarOverlay.classList.remove('open');
         document.body.style.overflow = '';
     }
 
     setupSwipeGestures() {
+        if (!this.elements.sidebar) return;
         let touchStartX = 0;
-        
-        this.sidebar.addEventListener('touchstart', (e) => {
+        this.elements.sidebar.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].clientX;
         }, { passive: true });
 
-        this.sidebar.addEventListener('touchend', (e) => {
+        this.elements.sidebar.addEventListener('touchend', (e) => {
             const touchEndX = e.changedTouches[0].clientX;
-            if (touchStartX - touchEndX > 50) {
+            if (touchStartX - touchEndX > 50) { // Swipe left to close
                 this.closeSidebar();
             }
         }, { passive: true });
     }
 
-    loadUserData() {
-        const usuario = JSON.parse(localStorage.getItem('usuario'));
-        if (usuario) {
-            const userName = document.getElementById('userName');
-            if (userName) userName.textContent = usuario.nombre;
-
-            const sidebarUserName = document.getElementById('sidebarUserName');
-            if (sidebarUserName) sidebarUserName.textContent = usuario.nombre;
-
-            const sidebarUserCode = document.getElementById('sidebarUserCode');
-            if (sidebarUserCode) sidebarUserCode.textContent = usuario.codigo || 'Sin código';
+    async loadUserData() {
+        // This method remains largely the same, using localStorage.
+        // Could be refactored to use ApiService.get('/api/user/profile') in the future.
+        try {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                if (this.elements.userNameDisplay) this.elements.userNameDisplay.textContent = currentUser.nombre;
+                if (this.elements.sidebarUserNameDisplay) this.elements.sidebarUserNameDisplay.textContent = currentUser.nombre;
+                if (this.elements.sidebarUserCodeDisplay) this.elements.sidebarUserCodeDisplay.textContent = currentUser.codigo || 'N/A';
+            } else {
+                // Handle case where user data is not found, possibly redirect to login
+                // UIUtils.showToast('Por favor, inicia sesión.', 'error');
+                // window.location.href = 'index.html';
+                throw new Error('No se encontraron datos de usuario. Por favor, inicie sesión.');
+            }
+        } catch (e) { // Catches JSON.parse errors or other sync errors
+            console.error("Error loading user data from localStorage:", e);
+            throw new Error('Error al procesar datos de usuario.');
         }
     }
 
-    loadRecentAccess() {
-        // Simular carga de accesos recientes
-        setTimeout(() => {
-            // En producción sería una llamada API
-            console.log('Accesos recientes cargados');
-        }, 500);
+    async loadRecentAccess() {
+        // UIUtils.setButtonLoading(someButton, true); // If triggered by a button
+        // For now, this remains a simulation.
+        // Future: const activity = await ApiService.get('/api/dashboard/activity');
+        return new Promise(resolve => {
+            setTimeout(() => {
+                if (this.elements.recentAccessContainer) {
+                    // Example: Clear previous and add new, or update existing
+                    // this.elements.recentAccessContainer.innerHTML = '<p>Simulated recent activity loaded.</p>';
+                }
+                console.log('Simulated recent access loaded.');
+                resolve();
+            }, 500);
+        });
+        // UIUtils.setButtonLoading(someButton, false);
     }
 
     showNotifications() {
-        // Simular notificaciones
-        alert('Mostrando notificaciones...');
+        // Replace alert with UIUtils.showToast or a proper notification UI
+        UIUtils.showToast('Mostrando notificaciones... (simulado)', 'info');
     }
 
     handleLogout() {
-        // Simular logout
+        // UIUtils.setButtonLoading(this.elements.logoutBtn, true); // Logout is usually quick, but good practice if API call involved
         if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
-            localStorage.removeItem('authToken');
-            window.location.href = 'login.html';
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('authToken'); // Just in case
+            // UIUtils.showToast('Has cerrado sesión.', 'success'); // Feedback before redirect
+            window.location.href = 'index.html';
+        } else {
+            // UIUtils.setButtonLoading(this.elements.logoutBtn, false);
         }
     }
 }
 
-// Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    new Dashboard();
+    if (document.querySelector('.app-header')) { // Check if on dashboard page
+        new Dashboard();
+    }
 });

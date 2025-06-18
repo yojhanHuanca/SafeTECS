@@ -1,91 +1,100 @@
+// js/historial.js
+import { ApiService } from '../services/ApiService.js'; // Adjusted path
+import { UIUtils } from '../utils/UIUtils.js'; // Adjusted path
+
 class HistoryManager {
     constructor() {
         this.currentPage = 1;
+        this.itemsPerPage = 10; // Define items per page
         this.totalPages = 1;
-        this.filters = {
+        this.currentFilters = { // Renamed from 'filters' to avoid conflict with any potential global 'filters'
             startDate: '',
             endDate: '',
             type: 'all'
         };
         
-        // Elementos del DOM
         this.elements = {
-            loading: document.getElementById('loadingState'),
-            accessList: document.getElementById('accessList'),
+            loadingIndicator: document.getElementById('loadingState'), // Renamed for clarity
+            accessListContainer: document.getElementById('accessList'), // Renamed for clarity
             filterBtn: document.getElementById('filterBtn'),
             filtersDropdown: document.getElementById('filtersDropdown'),
-            startDate: document.getElementById('startDate'),
-            endDate: document.getElementById('endDate'),
-            accessType: document.getElementById('accessType'),
-            applyFilters: document.getElementById('applyFilters'),
-            resetFilters: document.getElementById('resetFilters'),
-            prevPage: document.getElementById('prevPageMobile'),
-            nextPage: document.getElementById('nextPageMobile'),
-            pageInfo: document.getElementById('pageInfoMobile'),
+            startDateInput: document.getElementById('startDate'), // Renamed
+            endDateInput: document.getElementById('endDate'), // Renamed
+            accessTypeSelect: document.getElementById('accessType'), // Renamed
+            applyFiltersBtn: document.getElementById('applyFilters'), // Renamed
+            resetFiltersBtn: document.getElementById('resetFilters'), // Renamed
+            prevPageBtn: document.getElementById('prevPageMobile'), // Renamed
+            nextPageBtn: document.getElementById('nextPageMobile'), // Renamed
+            pageInfoMobile: document.getElementById('pageInfoMobile'),
             exportModal: document.getElementById('exportModal'),
-            exportPDF: document.getElementById('exportPDF'),
-            exportExcel: document.getElementById('exportExcel'),
-            closeExport: document.getElementById('closeExportModal')
+            exportPDFBtn: document.getElementById('exportPDF'), // Renamed
+            exportExcelBtn: document.getElementById('exportExcel'), // Renamed
+            closeExportModalBtn: document.getElementById('closeExportModal'), // Renamed
+            errorMessageDiv: document.getElementById('historial-error-message') // Added for error messages
         };
         
         this.init();
     }
 
     init() {
-        // Cargar datos iniciales
-        this.loadData();
-        
-        // Event Listeners
-        this.elements.filterBtn.addEventListener('click', () => this.toggleFilters());
-        this.elements.applyFilters.addEventListener('click', () => this.applyFilters());
-        this.elements.resetFilters.addEventListener('click', () => this.resetFilters());
-        this.elements.prevPage.addEventListener('click', () => this.changePage(-1));
-        this.elements.nextPage.addEventListener('click', () => this.changePage(1));
-        this.elements.exportPDF.addEventListener('click', () => this.exportData('pdf'));
-        this.elements.exportExcel.addEventListener('click', () => this.exportData('excel'));
-        this.elements.closeExport.addEventListener('click', () => this.closeModal());
-        
-        // Configurar fechas por defecto (últimos 7 días)
+        this.setupEventListeners();
+        this.setDefaultDates();
+        this.loadAccessHistory(); // Initial data load
+    }
+
+    setDefaultDates() {
         const today = new Date();
         const weekAgo = new Date();
         weekAgo.setDate(today.getDate() - 7);
         
-        this.elements.startDate.valueAsDate = weekAgo;
-        this.elements.endDate.valueAsDate = today;
-        this.elements.startDate.max = today.toISOString().split('T')[0];
-        this.elements.endDate.max = today.toISOString().split('T')[0];
+        this.elements.startDateInput.valueAsDate = weekAgo;
+        this.elements.endDateInput.valueAsDate = today;
+        this.elements.startDateInput.max = today.toISOString().split('T')[0];
+        this.elements.endDateInput.max = today.toISOString().split('T')[0];
     }
 
-    async loadData() {
-        this.showLoading(true);
+    setupEventListeners() {
+        this.elements.filterBtn.addEventListener('click', () => this.toggleFilters());
+        this.elements.applyFiltersBtn.addEventListener('click', () => this.handleApplyFilters());
+        this.elements.resetFiltersBtn.addEventListener('click', () => this.handleResetFilters());
+        this.elements.prevPageBtn.addEventListener('click', () => this.changePage(-1));
+        this.elements.nextPageBtn.addEventListener('click', () => this.changePage(1));
         
-        try {
-            // Simular llamada a API (en producción sería fetch a tu backend)
-            const response = await this.mockApiCall();
-            this.renderData(response.data);
-            this.updatePagination(response.total);
-        } catch (error) {
-            console.error('Error al cargar datos:', error);
-            this.renderError();
-        } finally {
-            this.showLoading(false);
-        }
+        this.elements.exportPDFBtn.addEventListener('click', () => this.exportData('pdf'));
+        this.elements.exportExcelBtn.addEventListener('click', () => this.exportData('excel'));
+        this.elements.closeExportModalBtn.addEventListener('click', () => this.closeModal());
     }
 
-    async mockApiCall() {
-        // Simular retardo de red
-        await new Promise(resolve => setTimeout(resolve, 800));
-        
-        // Datos de ejemplo (en producción vendrían de tu API)
+    async fetchAccessHistory(page = 1, filters = {}) {
+        this.showLoadingState(true);
+        if(this.elements.errorMessageDiv) UIUtils.hideMessage(this.elements.errorMessageDiv);
+
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 600));
+
+        // In a real scenario:
+        // try {
+        //     const params = { ...filters, page, limit: this.itemsPerPage };
+        //     const response = await ApiService.get('/historial', params);
+        //     return { data: response.data, total: response.meta.totalItems }; // Adjust based on actual API
+        // } catch (error) {
+        //     console.error('Error fetching access history:', error.status, error.message, error.data);
+        //     if(this.elements.errorMessageDiv) UIUtils.displayMessage(this.elements.errorMessageDiv, error.message || 'Error al cargar el historial.', 'error');
+        //     return { data: [], total: 0 };
+        // } finally {
+        //     this.showLoadingState(false);
+        // }
+
+        // Mock data generation
         const mockData = [];
         const statuses = ['success', 'error'];
         const types = ['entry', 'exit'];
-        const locations = ['Edificio A', 'Edificio B', 'Edificio C'];
-        
-        for (let i = 0; i < 15; i++) {
+        const locations = ['Edificio A', 'Edificio B', 'Edificio C', 'Biblioteca', 'Gimnasio'];
+        const totalMockItems = 50;
+        for (let i = 0; i < totalMockItems; i++) {
             const date = new Date();
-            date.setDate(date.getDate() - Math.floor(Math.random() * 30));
-            
+            date.setDate(date.getDate() - Math.floor(Math.random() * 60));
+            date.setHours(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60));
             mockData.push({
                 id: i + 1,
                 date: date.toISOString(),
@@ -95,58 +104,54 @@ class HistoryManager {
             });
         }
         
-        // Aplicar filtros simulados
         let filteredData = mockData.filter(item => {
             const itemDate = new Date(item.date).toISOString().split('T')[0];
             const matchesDate = (
-                (!this.filters.startDate || itemDate >= this.filters.startDate) &&
-                (!this.filters.endDate || itemDate <= this.filters.endDate)
+                (!filters.startDate || itemDate >= filters.startDate) &&
+                (!filters.endDate || itemDate <= filters.endDate)
             );
-            const matchesType = this.filters.type === 'all' || item.type === this.filters.type;
+            const matchesType = !filters.type || filters.type === 'all' || item.type === filters.type;
             return matchesDate && matchesType;
         });
         
-        // Paginación simulada
-        const startIdx = (this.currentPage - 1) * 10;
-        const paginatedData = filteredData.slice(startIdx, startIdx + 10);
+        const startIdx = (page - 1) * this.itemsPerPage;
+        const paginatedData = filteredData.slice(startIdx, startIdx + this.itemsPerPage);
         
-        return {
-            data: paginatedData,
-            total: filteredData.length
-        };
+        this.showLoadingState(false); // Moved here for mock
+        return { data: paginatedData, total: filteredData.length };
     }
 
-    renderData(data) {
+    async loadAccessHistory() {
+        const response = await this.fetchAccessHistory(this.currentPage, this.currentFilters);
+        this.renderAccessList(response.data);
+        this.updatePaginationControls(response.total);
+    }
+
+    renderAccessList(data) {
+        if (!this.elements.accessListContainer) return;
         if (data.length === 0) {
-            this.elements.accessList.innerHTML = `
+            this.elements.accessListContainer.innerHTML = `
                 <div class="empty-state">
-                    <span class="material-icons">info</span>
-                    <p>No se encontraron registros</p>
+                    <span class="material-icons">info_outline</span>
+                    <p>No se encontraron registros para los filtros seleccionados.</p>
                 </div>
             `;
             return;
         }
         
-        this.elements.accessList.innerHTML = data.map(item => {
+        this.elements.accessListContainer.innerHTML = data.map(item => {
             const date = new Date(item.date);
-            const formattedDate = date.toLocaleDateString('es-MX', { 
-                day: '2-digit', 
-                month: 'short', 
-                year: 'numeric' 
-            });
-            const time = date.toLocaleTimeString('es-MX', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
+            const formattedDate = date.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
+            const time = date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: true });
             
             return `
-                <div class="access-item ${item.status}">
+                <div class="access-item ${item.status} ${item.type}">
                     <div class="access-icon">
                         <span class="material-icons">${item.type === 'entry' ? 'login' : 'logout'}</span>
                     </div>
                     <div class="access-info">
                         <h3>${item.type === 'entry' ? 'Entrada' : 'Salida'} - ${item.location}</h3>
-                        <p>${formattedDate} · ${time}</p>
+                        <p>${formattedDate} &bull; ${time}</p>
                     </div>
                     <span class="access-status">${item.status === 'success' ? '✓' : '✗'}</span>
                 </div>
@@ -154,86 +159,94 @@ class HistoryManager {
         }).join('');
     }
 
-    renderError() {
-        this.elements.accessList.innerHTML = `
-            <div class="error-state">
-                <span class="material-icons">error</span>
-                <p>Error al cargar el historial</p>
-                <button id="retryBtn" class="btn-primary">Reintentar</button>
-            </div>
-        `;
-        
-        document.getElementById('retryBtn').addEventListener('click', () => this.loadData());
+    updatePaginationControls(totalItems) {
+        this.totalPages = Math.ceil(totalItems / this.itemsPerPage);
+        if (this.totalPages < 1) this.totalPages = 1;
+        this.elements.pageInfoMobile.textContent = `Pág. ${this.currentPage}/${this.totalPages}`;
+        this.elements.prevPageBtn.disabled = this.currentPage <= 1;
+        this.elements.nextPageBtn.disabled = this.currentPage >= this.totalPages;
     }
 
-    updatePagination(totalItems) {
-        this.totalPages = Math.ceil(totalItems / 10);
-        this.elements.pageInfo.textContent = `Pág. ${this.currentPage}/${this.totalPages}`;
-        this.elements.prevPage.disabled = this.currentPage <= 1;
-        this.elements.nextPage.disabled = this.currentPage >= this.totalPages;
-    }
-
-    showLoading(show) {
-        this.elements.loading.style.display = show ? 'flex' : 'none';
-        this.elements.accessList.style.display = show ? 'none' : 'flex';
+    showLoadingState(show) {
+        if (this.elements.loadingIndicator) {
+            this.elements.loadingIndicator.style.display = show ? 'flex' : 'none';
+        }
+        if (this.elements.accessListContainer) {
+            this.elements.accessListContainer.style.display = show ? 'none' : 'flex';
+        }
     }
 
     toggleFilters() {
         this.elements.filtersDropdown.classList.toggle('hidden');
     }
 
-    applyFilters() {
-        this.filters = {
-            startDate: this.elements.startDate.value,
-            endDate: this.elements.endDate.value,
-            type: this.elements.accessType.value
+    handleApplyFilters() {
+        UIUtils.setButtonLoading(this.elements.applyFiltersBtn, true);
+        this.currentFilters = {
+            startDate: this.elements.startDateInput.value,
+            endDate: this.elements.endDateInput.value,
+            type: this.elements.accessTypeSelect.value
         };
-        
         this.currentPage = 1;
-        this.loadData();
-        this.elements.filtersDropdown.classList.add('hidden');
+        this.loadAccessHistory().finally(() => {
+            UIUtils.setButtonLoading(this.elements.applyFiltersBtn, false);
+        });
+        if(!this.elements.filtersDropdown.classList.contains('hidden')) {
+            this.elements.filtersDropdown.classList.add('hidden');
+        }
     }
 
-    resetFilters() {
-        this.elements.startDate.value = '';
-        this.elements.endDate.value = '';
-        this.elements.accessType.value = 'all';
+    handleResetFilters() {
+        this.setDefaultDates();
+        this.elements.accessTypeSelect.value = 'all';
+
+        this.currentFilters = { startDate: this.elements.startDateInput.value, endDate: this.elements.endDateInput.value, type: 'all' };
+        this.currentPage = 1;
+        this.loadAccessHistory();
+        if(!this.elements.filtersDropdown.classList.contains('hidden')) {
+            this.elements.filtersDropdown.classList.add('hidden');
+        }
     }
 
     changePage(delta) {
-        this.currentPage += delta;
-        this.loadData();
+        const newPage = this.currentPage + delta;
+        if (newPage < 1 || newPage > this.totalPages) return;
         
-        // Scroll suave al inicio
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+        this.currentPage = newPage;
+        const btnToLoad = delta > 0 ? this.elements.nextPageBtn : this.elements.prevPageBtn;
+        UIUtils.setButtonLoading(btnToLoad, true);
+        this.loadAccessHistory().finally(() => {
+            UIUtils.setButtonLoading(btnToLoad, false);
         });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     exportData(format) {
-        console.log(`Exportando a ${format.toUpperCase()}...`); // En producción usarías librerías como pdfmake o sheetjs
+        UIUtils.showToast(`Exportando historial a ${format.toUpperCase()}...`, 'info');
+        console.log(`Simulating export to ${format.toUpperCase()}`);
         this.closeModal();
-        alert(`Exportación a ${format.toUpperCase()} simulada. En producción se generaría el archivo.`);
+        setTimeout(() => {
+            UIUtils.showToast(`Historial exportado a ${format.toUpperCase()} (simulado).`, 'success');
+        }, 1500);
     }
 
     openModal() {
-        this.elements.exportModal.classList.remove('hidden');
+        if (this.elements.exportModal) this.elements.exportModal.classList.remove('hidden');
     }
 
     closeModal() {
-        this.elements.exportModal.classList.add('hidden');
+        if (this.elements.exportModal) this.elements.exportModal.classList.add('hidden');
     }
 }
 
-// Inicializar al cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
-    const historyManager = new HistoryManager();
-    
-    // Ejemplo: Botón de exportar en el header (simulado)
-    document.querySelector('.history-header').addEventListener('click', (e) => {
-        if (e.target.closest('.icon-btn') && e.target.textContent === 'download') {
-            historyManager.openModal();
+    if (document.getElementById('accessList')) {
+        const historyManager = new HistoryManager();
+
+        const exportBtnHeader = document.querySelector('.history-header #exportBtn');
+        if (exportBtnHeader) {
+            exportBtnHeader.addEventListener('click', () => historyManager.openModal());
         }
-    });
+    }
 });

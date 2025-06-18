@@ -1,43 +1,24 @@
-:root {
-    --primary: #4361ee;
-    --primary-dark: #3a56d4;
-    --accent: #4cc9f0;
-    --error: #f72585;
-    --white: #ffffff;
-    --gray-100: #f8f9fa;
-    --gray-800: #2b2d42;
-    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
-    --radius-lg: 20px;
-    --radius-md: 12px;
-    --radius-sm: 8px;
-    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
+/* css/auth.css */
+/* Specific styles for authentication pages (login, register) */
 
-/* Base */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-body {
-    background: linear-gradient(135deg, #0f2027, #2c5364 80%);
-    font-family: 'Poppins', Arial, sans-serif;
-    color: #fff;
+/* Base styles for body are now in base.css */
+/* This body style is specific to auth pages with dark gradient */
+body.auth-page-body {
+    background: linear-gradient(135deg, var(--background-dark-gradient-start), var(--background-dark-gradient-end) 80%);
+    font-family: var(--font-family-sans);
+    color: var(--text-color-light);
     min-height: 100vh;
-    margin: 0;
+    margin: 0; /* Already in base.css but good for specificity */
 }
 
-/* Fondo animado */
+/* Fondo animado (remains specific to auth) */
 .auth-background {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
     z-index: -1;
 }
 
@@ -46,9 +27,9 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 100px;
+    height: 100px; /* Consider making this responsive or using em/rem */
     background: url('../assets/img/wave-bg.svg') repeat-x;
-    background-size: 1000px 100px;
+    background-size: 1000px 100px; /* Consider implications for very large screens */
     animation: wave 15s linear infinite;
 }
 
@@ -64,351 +45,156 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 1.5rem;
+    padding: var(--space-lg);
 }
 
 .auth-card {
-    background: rgba(255,255,255,0.08);
-    box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
-    border-radius: 24px;
-    padding: 2.5rem 2rem 2rem 2rem;
+    background: var(--background-glass-auth); /* rgba(255,255,255,0.08) */
+    box-shadow: var(--shadow-xl); /* Example: 0 8px 32px 0 rgba(31,38,135,0.37) */
+    border-radius: var(--radius-lg); /* Was 24px, now uses variable */
+    padding: var(--space-xxl) var(--space-xl); /* Was 2.5rem 2rem */
     width: 100%;
-    max-width: 450px;
+    max-width: 450px; /* Stays as is, specific to auth card size */
     backdrop-filter: blur(8px);
-    border: 1.5px solid rgba(255,255,255,0.18);
-    margin: 2rem 0;
+    border: var(--border-width-medium) solid rgba(255,255,255,0.18); /* Keep specific border for glass effect */
+    margin: var(--space-xl) 0;
     overflow: hidden;
     transform: translateY(0);
-    transition: var(--transition);
+    transition: var(--transition-base);
 }
 
 .auth-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-5px); /* Keep specific interaction */
+    box-shadow: var(--shadow-xl); /* Can use a slightly different hover shadow if defined */
 }
 
 .logo-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-lg);
 }
 
 .logo {
-    width: 70px;
+    width: 70px; /* Keep specific size */
     height: 70px;
-    border-radius: 50%;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 2px 12px rgba(44,83,100,0.25);
+    border-radius: var(--radius-full);
+    margin-bottom: var(--space-sm); /* Was 0.5rem */
+    box-shadow: var(--shadow-md); /* Was 0 2px 12px rgba(44,83,100,0.25) */
 }
 
 .app-title {
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: #fff;
-    margin-bottom: 0.5rem;
+    font-size: var(--font-size-h2); /* Was 2rem */
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 1px; /* Keep specific styling */
+    color: var(--text-color-light);
+    margin-bottom: var(--space-sm);
 }
 
 /* Formulario */
 .auth-form {
-    padding: 2rem;
+    padding: var(--space-xl); /* Was 2rem */
 }
 
-.input-group {
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-.input-group.floating input {
-    width: 100%;
-    padding: 0.9rem 2.5rem 0.9rem 1rem;
-    border: none;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-    font-size: 1rem;
-    outline: none;
-    transition: background 0.2s;
-}
-
-.input-group.floating label {
-    position: absolute;
-    left: 1rem;
-    top: 0.7rem;
-    color: #b0bec5;
-    font-size: 0.95rem;
-    pointer-events: none;
-    transition: 0.2s;
-}
-
-.input-group.floating .icon {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    color: #90caf9;
-    font-size: 1.3rem;
-}
-
-.input-group.floating .underline {
-    position: absolute;
-    bottom: 0;
-    left: 3rem;
-    width: calc(100% - 3rem);
-    height: 2px;
-    background-color: var(--primary);
-    transform: scaleX(0);
-    transition: var(--transition);
-}
-
-/* Efectos para inputs */
-.input-group.floating input:focus ~ label,
-.input-group.floating input:valid ~ label {
-    top: -1.1rem;
-    left: 0.8rem;
-    font-size: 0.8rem;
-    color: #64b5f6;
-    background: #2c5364;
-    padding: 0 0.3rem;
-    border-radius: 6px;
-}
-
-.input-group.floating input:focus ~ .underline,
-.input-group.floating input:valid ~ .underline {
-    transform: scaleX(1);
-}
-
-/* Botón toggle password */
+/* .input-group and related styles are now handled by .form-group in base.css */
+/* Specific styling for toggle password button if needed, beyond .form-icon */
 .toggle-pwd {
     background: none;
     border: none;
-    position: absolute;
-    right: 2.5rem;
-    top: 1rem;
-    color: #90caf9;
+    /* position, top, transform are handled by .form-icon if it's placed correctly */
+    /* right: var(--space-lg); */ /* This might need to be adjusted based on icon placement */
+    color: var(--secondary-color); /* Or var(--text-color-muted-light) to match other icons */
     cursor: pointer;
+    /* Ensure it's properly aligned if it's not the primary form-icon */
+    z-index: 2; /* To be clickable above other elements if overlapping */
 }
 
-/* Botón principal */
-.btn {
+/* Botón principal (styles for .btn, .btn-primary, .btn-outline are now in base.css) */
+/* If auth pages need a specific variant of a button, define it here. */
+/* For example, if .btn in auth needs a different gradient than base .btn-primary */
+
+/* Example: Auth-specific button variant if base .btn or .btn-primary isn't sufficient */
+/* .btn-auth {
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    color: var(--text-color-light);
+}
+.btn-auth:hover {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+} */
+
+/* Ensure .btn class from base.css is used on HTML elements */
+/* General .btn styles are now in base.css */
+/* .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(90deg, #64b5f6, #1976d2);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin: 0.5rem 0;
-    box-shadow: 0 2px 8px rgba(25,118,210,0.15);
-    transition: background 0.2s, transform 0.2s;
+    /* Base .btn styles like padding, font, border-radius, etc. are in base.css */
+    /* This specific gradient for auth buttons can be kept if desired, */
+    /* or switch to using .btn-primary from base.css in HTML. */
+    /* For now, assuming this gradient is specific for auth pages. */
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); /* This overrides base .btn if only .btn is used */
+    color: var(--text-color-light);
+    /* Other properties like border, padding, etc., are inherited from .btn in base.css */
 }
 
-.btn:hover {
-    background: linear-gradient(90deg, #1976d2, #64b5f6);
-    transform: translateY(-2px) scale(1.03);
+.btn:hover { /* This hover is also specific if the gradient is specific */
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    /* transform and box-shadow from base.css .btn:hover will still apply */
 }
 
-.btn-outline {
-    background: none;
-    border: 2px solid #64b5f6;
-    color: #64b5f6;
-}
+/* .btn-outline is already defined in base.css. If auth needs a different one, define here. */
+/* For now, assume base.css .btn-outline is sufficient. */
 
-.btn-outline:hover {
-    background: #64b5f6;
-    color: #fff;
-}
 
-#error-message, #login-error {
-    color: #ff5252;
-    background: rgba(255,82,82,0.08);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    margin-bottom: 1rem;
+#error-message, #login-error { /* Error display specific to auth forms */
+    color: var(--error-color);
+    background: rgba(var(--error-color-rgb, 247, 37, 133), 0.08); /* Define --error-color-rgb or use a light error bg */
+    border-radius: var(--radius-sm);
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-md);
     text-align: center;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
 }
 
 /* Footer del formulario */
 .auth-footer {
-    margin-top: 1.5rem;
+    margin-top: var(--space-lg);
     text-align: center;
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
 }
 
 .auth-footer a {
-    color: var(--primary);
+    color: var(--primary-color-light); /* Lighter for dark bg */
     text-decoration: none;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
 }
 
 .forgot-password {
     display: block;
-    margin-top: 0.5rem;
-    color: var(--gray-500);
-    font-size: 0.85rem;
+    margin-top: var(--space-sm);
+    color: var(--text-color-muted-light);
+    font-size: calc(var(--font-size-sm) * 0.9); /* Was 0.85rem */
 }
 
-.profile-header {
-    display: flex;
-    align-items: center;
-    background: rgba(44,83,100,0.95);
-    padding: 1rem 2rem;
-    border-radius: 0 0 18px 18px;
-    box-shadow: 0 2px 8px rgba(44,83,100,0.15);
-    margin-bottom: 2rem;
-}
-
-.profile-header .back-btn {
-    color: #fff;
-    margin-right: 1rem;
-    font-size: 1.5rem;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.profile-header .back-btn:hover {
-    color: #64b5f6;
-}
-
-.user-avatar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1.2rem;
-}
-
-.user-avatar img {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    border: 3px solid #64b5f6;
-    box-shadow: 0 2px 12px rgba(44,83,100,0.25);
-    margin-bottom: 0.5rem;
-}
-
-.edit-avatar-btn {
-    background: #64b5f6;
-    border: none;
-    border-radius: 50%;
-    padding: 0.4rem;
-    color: #fff;
-    cursor: pointer;
-    margin-top: -1.5rem;
-    margin-left: 4rem;
-    box-shadow: 0 2px 8px rgba(100,181,246,0.15);
-    transition: background 0.2s;
-}
-
-.edit-avatar-btn:hover {
-    background: #1976d2;
-}
-
-.user-details {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.user-details h2 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 0.2rem;
-}
-
-.user-details p {
-    color: #b0bec5;
-    margin: 0.2rem 0;
-    font-size: 1rem;
-}
-
-.barcode-section {
-    background: rgba(255,255,255,0.07);
-    border-radius: 16px;
-    padding: 1.5rem 1rem;
-    margin: 1.5rem 0;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(44,83,100,0.10);
-}
-
-.barcode-container {
-    margin: 1rem 0;
-}
-
-#barcode {
-    margin: 0 auto;
-    display: block;
-    background: #fff;
-    border-radius: 8px;
-    padding: 0.5rem;
-    box-shadow: 0 2px 8px rgba(44,83,100,0.10);
-}
-
-#barcodeText {
-    font-size: 1.1rem;
-    color: #1976d2;
-    font-weight: 600;
-    margin-top: 0.5rem;
-    letter-spacing: 2px;
-}
-
-.barcode-hint {
-    color: #b0bec5;
-    font-size: 0.95rem;
-    margin-top: 0.2rem;
-}
-
-.barcode-actions {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.settings-section {
-    background: rgba(255,255,255,0.07);
-    border-radius: 16px;
-    padding: 1.5rem 1rem;
-    margin: 1.5rem 0;
-    box-shadow: 0 2px 8px rgba(44,83,100,0.10);
-}
-
-.settings-section h2 {
-    color: #fff;
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-}
-
-.settings-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
 
 /* Responsive */
 @media (max-width: 480px) {
     .auth-container {
-        padding: 1rem;
+        padding: var(--space-md); /* Was 1rem */
     }
     
-    .auth-card {
-        border-radius: var(--radius-md);
-    }
+    /* .auth-card border-radius is already using var(--radius-lg) or var(--radius-md) from base,
+       so this specific override might not be needed if base.css var(--radius-md) is suitable */
     
     .logo-container {
-        padding: 1.5rem;
+        padding: var(--space-lg); /* Was 1.5rem */
     }
 }
 
 @media (max-width: 600px) {
-    .auth-card, .profile-card {
+    .auth-card { /* .profile-card removed as it's not styled here */
         max-width: 95vw;
-        padding: 1.2rem 0.5rem;
+        padding: var(--space-lg) var(--space-sm); /* Was 1.2rem 0.5rem */
     }
-    .profile-header {
-        padding: 0.7rem 1rem;
-    }
+    /* .profile-header removed */
 }
