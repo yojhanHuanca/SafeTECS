@@ -1,5 +1,43 @@
-/* css/emergency.css */
-/* Body style from base.css (light theme) is used by default. */
+/* Paleta y variables */
+:root {
+    --danger: #d00000;
+    --danger-light: #ffeaea;
+    --danger-dark: #b71c1c;
+    --success: #38b000;
+    --success-light: #eaffea;
+    --warning: #ffaa00;
+    --warning-light: #fff3e0;
+    --white: #ffffff;
+    --gray-100: #f4f7fa;
+    --gray-800: #232b3b;
+    --gray-500: #6b7a90;
+    --glass-bg: rgba(255,255,255,0.75);
+    --glass-blur: blur(12px);
+    --shadow-lg: 0 8px 32px rgba(208,0,0,0.18);
+    --shadow-md: 0 4px 16px rgba(30,34,90,0.10);
+    --shadow-sm: 0 1.5px 6px rgba(30,34,90,0.07);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 10px;
+    --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #f4f7fa 60%, #e3eaf2 100%);
+    color: var(--gray-800);
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
 
 /* Header */
 .emergency-header {
@@ -7,113 +45,108 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 64px; /* Keep specific height */
-    background: var(--background-glass-light); /* Was var(--glass-bg) */
-    backdrop-filter: blur(12px); /* Was var(--glass-blur) */
+    height: 64px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
     display: flex;
     align-items: center;
-    padding: 0 var(--space-lg); /* Was 0 1.2rem */
+    padding: 0 1.2rem;
     box-shadow: var(--shadow-sm);
     z-index: 100;
     border-bottom-left-radius: var(--radius-lg);
     border-bottom-right-radius: var(--radius-lg);
 }
 
-.emergency-header .back-btn { /* Apply .btn .btn-icon class in HTML if possible */
-    color: var(--error-color); /* Was var(--danger) */
-    margin-right: var(--space-md);
-    display: flex; /* Already in .btn */
-    font-size: calc(var(--font-size-base) * 1.7); /* Was 2rem */
-    transition: color var(--transition-short);
-    background: none; border: none; padding: var(--space-xs); border-radius: var(--radius-full);
+.back-btn {
+    color: var(--danger);
+    margin-right: 1rem;
+    display: flex;
+    font-size: 2rem;
+    transition: color 0.2s;
 }
 
-.emergency-header .back-btn:hover, .emergency-header .back-btn:focus-visible {
-    color: var(--error-color-dark, #b71c1c); /* Define --error-color-dark */
-    background-color: var(--error-color-light);
-    outline: none;
+.back-btn:hover {
+    color: var(--danger-dark);
 }
 
 .emergency-header h1 {
-    font-size: var(--font-size-h3); /* Was 1.5rem */
-    font-weight: var(--font-weight-bold);
-    color: var(--error-color-dark, #b71c1c); /* Was var(--danger-dark) */
-    letter-spacing: -1px; /* Keep specific style */
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--danger-dark);
+    letter-spacing: -1px;
 }
 
 /* Main container */
 .emergency-container {
-    padding: var(--space-xl) var(--space-lg); /* Was 2.2rem 1.5rem 2.5rem 1.5rem */
-    max-width: 440px; /* Keep specific max-width */
-    margin: var(--space-xl) auto 0 auto; /* Was 2.5rem auto 0 auto */
+    padding: 2.2rem 1.5rem 2.5rem 1.5rem;
+    max-width: 440px;
+    margin: 2.5rem auto 0 auto;
     display: flex;
     flex-direction: column;
-    gap: var(--space-xl); /* Was 2.5rem */
-    background: var(--background-glass-light);
+    gap: 2.5rem;
+    background: var(--glass-bg);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg); /* Original was var(--shadow-lg) referencing a red shadow, now generic */
-    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: var(--glass-blur);
     position: relative;
-    animation: fadeIn 0.7s cubic-bezier(0.4,0,0.2,1); /* Keep animation */
+    animation: fadeIn 0.7s cubic-bezier(0.4,0,0.2,1);
 }
 
-@keyframes fadeIn { /* Keep animation */
+@keyframes fadeIn {
     from { opacity: 0; transform: translateY(30px);}
     to { opacity: 1; transform: translateY(0);}
 }
 
 /* Estado de Emergencia */
 .emergency-status {
-    background: linear-gradient(90deg, var(--success-color-light) 60%, var(--success-color-light) 100%); /* Simplified gradient */
+    background: linear-gradient(90deg, var(--success-light) 60%, #eaffea 100%);
     border-radius: var(--radius-md);
-    padding: var(--space-md) var(--space-md); /* Was 1.1rem 1rem */
-    margin-bottom: var(--space-lg);
+    padding: 1.1rem 1rem;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-sm); /* Was 0.9rem */
-    border: var(--border-width-medium) solid var(--success-color);
+    gap: 0.9rem;
+    border: 1.5px solid var(--success);
     box-shadow: var(--shadow-sm);
-    font-size: var(--font-size-base); /* Was 1.08rem */
-    font-weight: var(--font-weight-medium);
-    animation: statusIn 0.7s; /* Keep animation */
-    color: var(--text-color-dark);
+    font-size: 1.08rem;
+    font-weight: 500;
+    animation: statusIn 0.7s;
 }
 
-@keyframes statusIn { /* Keep animation */
+@keyframes statusIn {
     from { opacity: 0; transform: scale(0.95);}
     to { opacity: 1; transform: scale(1);}
 }
 
 .emergency-status .status-icon {
-    color: var(--success-color);
-    font-size: calc(var(--font-size-base) * 1.8); /* Was 2.1rem */
-    animation: pulseSuccess 1.5s infinite; /* Keep animation */
+    color: var(--success);
+    font-size: 2.1rem;
+    animation: pulseSuccess 1.5s infinite;
 }
 
-@keyframes pulseSuccess { /* Keep animation */
+@keyframes pulseSuccess {
     0%,100% { filter: brightness(1);}
     50% { filter: brightness(1.3);}
 }
 
 .emergency-status.alert {
-    background: linear-gradient(90deg, var(--error-color-light) 60%, var(--error-color-light) 100%); /* Simplified gradient */
-    border-color: var(--error-color);
-    animation: pulseAlert 1.2s infinite, statusIn 0.7s; /* Keep animation */
-    color: var(--text-color-dark);
+    background: linear-gradient(90deg, var(--danger-light) 60%, #fff0f0 100%);
+    border-color: var(--danger);
+    animation: pulseAlert 1.2s infinite, statusIn 0.7s;
 }
 
-@keyframes pulseAlert { /* Keep specific shadow animation */
-    0%,100% { box-shadow: 0 0 0 0 rgba(var(--error-color-rgb),0.18);}
-    50% { box-shadow: 0 0 0 12px rgba(var(--error-color-rgb),0.10);}
+@keyframes pulseAlert {
+    0%,100% { box-shadow: 0 0 0 0 rgba(208,0,0,0.18);}
+    50% { box-shadow: 0 0 0 12px rgba(208,0,0,0.10);}
 }
 
 .emergency-status.alert .status-icon {
-    color: var(--error-color);
-    animation: shake 0.7s infinite; /* Keep animation */
+    color: var(--danger);
+    animation: shake 0.7s infinite;
 }
 
-@keyframes shake { /* Keep animation */
+@keyframes shake {
     0%,100% { transform: translateX(0);}
     20% { transform: translateX(-2px);}
     40% { transform: translateX(2px);}
@@ -124,39 +157,34 @@
 /* Botón de Pánico */
 .panic-button-container {
     text-align: center;
-    margin-bottom: var(--space-xl); /* Was 2rem */
+    margin-bottom: 2rem;
 }
 
 .panic-button {
-    width: 200px; /* Keep specific size */
+    width: 200px;
     height: 200px;
-    border-radius: var(--radius-full);
-    background: radial-gradient(circle at 60% 40%, #ff4e4e 0%, var(--error-color) 80%); /* Use variable */
-    color: var(--text-color-light);
+    border-radius: 50%;
+    background: radial-gradient(circle at 60% 40%, #ff4e4e 0%, #d00000 80%);
+    color: var(--white);
     border: none;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 10px 32px rgba(var(--error-color-rgb), 0.25), 0 2px 8px rgba(var(--error-color-rgb),0.10); /* Use variable */
-    transition: var(--transition-base);
-    margin: 0 auto var(--space-md);
+    box-shadow: 0 10px 32px rgba(208, 0, 0, 0.25), 0 2px 8px rgba(208,0,0,0.10);
+    transition: var(--transition);
+    margin: 0 auto 1rem;
     position: relative;
     overflow: hidden;
-    font-size: var(--font-size-base); /* Was 1.1rem */
-    animation: panicPulse 1.5s infinite; /* Keep animation */
+    font-size: 1.1rem;
+    animation: panicPulse 1.5s infinite;
     user-select: none;
 }
-.panic-button:focus-visible {
-    outline: var(--border-width-thick) solid var(--primary-color-dark); /* Generic focus for this unique button */
-    outline-offset: 4px; /* More prominent due to size */
-}
 
-
-@keyframes panicPulse { /* Keep specific shadow animation for panic button */
-    0%,100% { box-shadow: 0 0 0 0 rgba(var(--error-color-rgb),0.18), 0 10px 32px rgba(var(--error-color-rgb),0.25);}
-    50% { box-shadow: 0 0 0 18px rgba(var(--error-color-rgb),0.10), 0 10px 32px rgba(var(--error-color-rgb),0.25);}
+@keyframes panicPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(208,0,0,0.18), 0 10px 32px rgba(208,0,0,0.25);}
+    50% { box-shadow: 0 0 0 18px rgba(208,0,0,0.10), 0 10px 32px rgba(208,0,0,0.25);}
 }
 
 .panic-button:active {
@@ -165,49 +193,49 @@
 }
 
 .panic-button .material-icons {
-    font-size: calc(var(--font-size-base) * 3.5); /* Was 4.2rem */
-    margin-bottom: var(--space-xs); /* Was 0.6rem */
-    animation: panicIcon 1.5s infinite; /* Keep animation */
+    font-size: 4.2rem;
+    margin-bottom: 0.6rem;
+    animation: panicIcon 1.5s infinite;
 }
 
-@keyframes panicIcon { /* Keep animation */
+@keyframes panicIcon {
     0%,100% { transform: scale(1);}
     50% { transform: scale(1.13);}
 }
 
 .panic-button .button-text {
-    font-size: var(--font-size-lg); /* Was 1.18rem */
-    font-weight: var(--font-weight-semibold);
-    letter-spacing: 0.5px; /* Keep specific style */
-    text-shadow: 0 2px 8px rgba(var(--error-color-rgb),0.10); /* Use variable */
+    font-size: 1.18rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(208,0,0,0.10);
 }
 
 .panic-instructions {
-    color: var(--text-color-muted-dark); /* Was var(--gray-500) */
-    font-size: var(--font-size-base); /* Was 1.01rem */
-    max-width: 260px; /* Keep specific max-width */
+    color: var(--gray-500);
+    font-size: 1.01rem;
+    max-width: 260px;
     margin: 0 auto;
-    background: rgba(255,255,255,0.7); /* Keep specific style */
+    background: rgba(255,255,255,0.7);
     border-radius: var(--radius-sm);
-    padding: var(--space-xs) var(--space-sm); /* Was 0.5rem 0.7rem */
-    box-shadow: 0 1px 4px rgba(var(--error-color-rgb),0.04); /* Use variable */
+    padding: 0.5rem 0.7rem;
+    box-shadow: 0 1px 4px rgba(208,0,0,0.04);
 }
 
 /* Información de Emergencia */
 .emergency-info {
-    background: var(--background-glass-light); /* Was var(--glass-bg) */
+    background: var(--glass-bg);
     border-radius: var(--radius-md);
-    padding: var(--space-lg) var(--space-md); /* Was 1.5rem 1.1rem */
-    margin-bottom: var(--space-xl); /* Was 2rem */
+    padding: 1.5rem 1.1rem;
+    margin-bottom: 2rem;
     box-shadow: var(--shadow-md);
-    backdrop-filter: blur(12px); /* Was var(--glass-blur) */
-    animation: fadeIn 0.7s; /* Keep animation */
+    backdrop-filter: var(--glass-blur);
+    animation: fadeIn 0.7s;
 }
 
 .info-item {
     display: flex;
-    gap: var(--space-md); /* Was 1.1rem */
-    margin-bottom: var(--space-lg); /* Was 1.3rem */
+    gap: 1.1rem;
+    margin-bottom: 1.3rem;
     align-items: flex-start;
 }
 
@@ -216,49 +244,49 @@
 }
 
 .info-item .material-icons {
-    color: var(--error-color); /* Was var(--danger) */
-    font-size: calc(var(--font-size-base) * 1.7); /* Was 2rem */
-    background: var(--error-color-light); /* Was #fff0f0 */
-    border-radius: var(--radius-full);
-    padding: var(--space-xs); /* Was 0.4rem */
-    box-shadow: 0 1px 4px rgba(var(--error-color-rgb),0.07); /* Use variable */
+    color: var(--danger);
+    font-size: 2rem;
+    background: #fff0f0;
+    border-radius: 50%;
+    padding: 0.4rem;
+    box-shadow: 0 1px 4px rgba(208,0,0,0.07);
 }
 
 .info-item h3 {
-    font-size: var(--font-size-base); /* Was 1.05rem */
-    margin-bottom: var(--space-xxs); /* Was 0.18rem */
-    color: var(--text-color-dark); /* Was var(--gray-800) */
-    font-weight: var(--font-weight-semibold);
+    font-size: 1.05rem;
+    margin-bottom: 0.18rem;
+    color: var(--gray-800);
+    font-weight: 600;
 }
 
 .info-item p {
-    font-size: var(--font-size-sm); /* Was 0.97rem */
-    color: var(--text-color-muted-dark); /* Was var(--gray-500) */
-    font-weight: var(--font-weight-medium);
+    font-size: 0.97rem;
+    color: var(--gray-500);
+    font-weight: 500;
 }
 
 /* Contactos de Emergencia */
 .emergency-contacts {
-    background: var(--background-glass-light); /* Was var(--glass-bg) */
+    background: var(--glass-bg);
     border-radius: var(--radius-md);
-    padding: var(--space-lg) var(--space-md); /* Was 1.5rem 1.1rem */
+    padding: 1.5rem 1.1rem;
     box-shadow: var(--shadow-md);
-    backdrop-filter: blur(12px); /* Was var(--glass-blur) */
-    animation: fadeIn 0.7s; /* Keep animation */
+    backdrop-filter: var(--glass-blur);
+    animation: fadeIn 0.7s;
 }
 
 .emergency-contacts h2 {
-    font-size: var(--font-size-lg); /* Was 1.13rem */
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--space-md); /* Was 1.1rem */
-    color: var(--text-color-dark); /* Was var(--gray-800) */
-    letter-spacing: 0.2px; /* Keep specific style */
+    font-size: 1.13rem;
+    font-weight: 700;
+    margin-bottom: 1.1rem;
+    color: var(--gray-800);
+    letter-spacing: 0.2px;
 }
 
 .contacts-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-md); /* Was 1.1rem */
+    gap: 1.1rem;
 }
 
 .contact-card {
@@ -266,106 +294,133 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: var(--space-md) var(--space-xs); /* Was 1.1rem 0.5rem */
+    padding: 1.1rem 0.5rem;
     border-radius: var(--radius-sm);
     text-decoration: none;
-    color: var(--text-color-light);
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--font-size-base); /* Was 1.05rem */
-    transition: var(--transition-base);
-    min-height: 90px; /* Keep specific min-height */
-    box-shadow: var(--shadow-sm); /* Was 0 2px 12px rgba(30,34,90,0.10) */
+    color: var(--white);
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: var(--transition);
+    min-height: 90px;
+    box-shadow: 0 2px 12px rgba(30,34,90,0.10);
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, var(--text-color-dark) 60%, var(--primary-color) 100%); /* Was #232b3b, #1976d2 */
+    background: linear-gradient(135deg, #232b3b 60%, #1976d2 100%);
     border: none;
-}
-.contact-card:focus-visible {
-    outline: var(--border-width-thick) solid var(--primary-color-dark);
-    outline-offset: 2px;
 }
 
 .contact-card .material-icons {
-    font-size: calc(var(--font-size-base) * 1.8); /* Was 2.1rem */
-    margin-bottom: var(--space-xs); /* Was 0.5rem */
-    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.10)); /* Keep specific filter */
+    font-size: 2.1rem;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.10));
 }
 
 .contact-card.police {
-    background: linear-gradient(135deg, var(--primary-color) 60%, var(--text-color-dark) 100%); /* Was #1976d2, #232b3b */
+    background: linear-gradient(135deg, #1976d2 60%, #232b3b 100%);
 }
 
 .contact-card.medical {
-    background: linear-gradient(135deg, var(--error-color) 60%, var(--error-color-dark, #b71c1c) 100%); /* Was #d32f2f, #b71c1c */
+    background: linear-gradient(135deg, #d32f2f 60%, #b71c1c 100%);
 }
 
 .contact-card.security {
-    background: linear-gradient(135deg, var(--success-color) 60%, var(--text-color-dark) 100%); /* Was #388e3c, #232b3b */
+    background: linear-gradient(135deg, #388e3c 60%, #232b3b 100%);
 }
 
 .contact-card.contact {
-    background: linear-gradient(135deg, var(--accent-color) 60%, var(--text-color-dark) 100%); /* Was #7b1fa2 (purple), using accent now */
+    background: linear-gradient(135deg, #7b1fa2 60%, #232b3b 100%);
 }
 
-.contact-card:active { /* Keep specific active state */
+.contact-card:active {
     transform: scale(0.97);
     filter: brightness(0.95);
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 1px 4px rgba(30,34,90,0.10);
 }
 
 /* Modal de Confirmación */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(var(--text-color-dark-rgb, 35,43,59),0.28); /* Define --text-color-dark-rgb */
+    background: rgba(30,34,90,0.28);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    padding: var(--space-md);
-    animation: fadeIn 0.3s; /* Keep animation */
+    padding: 1rem;
+    animation: fadeIn 0.3s;
 }
 
 .modal-content {
-    background: var(--background-light); /* Was var(--glass-bg) */
+    background: var(--glass-bg);
     border-radius: var(--radius-md);
-    padding: var(--space-xl) var(--space-lg) var(--space-lg) var(--space-lg); /* Was 2rem 1.2rem 1.5rem 1.2rem */
+    padding: 2rem 1.2rem 1.5rem 1.2rem;
     width: 100%;
-    max-width: 370px; /* Keep specific max-width */
+    max-width: 370px;
     text-align: center;
-    box-shadow: var(--shadow-xl); /* Was var(--shadow-md) */
-    /* backdrop-filter: blur(12px); Removed for solid background */
-    animation: modalIn 0.3s; /* Keep animation */
+    box-shadow: var(--shadow-md);
+    backdrop-filter: var(--glass-blur);
+    animation: modalIn 0.3s;
 }
 
-@keyframes modalIn { /* Keep animation */
+@keyframes modalIn {
     from { opacity: 0; transform: translateY(30px);}
     to { opacity: 1; transform: translateY(0);}
 }
 
 .modal-content h2 {
-    font-size: var(--font-size-h4); /* Was 1.25rem */
-    margin-bottom: var(--space-sm); /* Was 0.5rem */
-    color: var(--error-color-dark, #b71c1c); /* Was var(--danger-dark) */
-    font-weight: var(--font-weight-bold);
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--danger-dark);
+    font-weight: 700;
 }
 
 .modal-content p {
-    font-size: var(--font-size-base); /* Was 1.01rem */
-    color: var(--text-color-muted-dark); /* Was var(--gray-500) */
-    margin-bottom: var(--space-lg); /* Was 1.5rem */
+    font-size: 1.01rem;
+    color: var(--gray-500);
+    margin-bottom: 1.5rem;
 }
 
 .modal-buttons {
     display: flex;
-    gap: var(--space-md); /* Was 1rem */
+    gap: 1rem;
 }
 
-/* .btn, .btn-outline, .btn-danger specific styles for modal are removed */
-/* HTML should use <button class="btn btn-outline"> & <button class="btn btn-danger"> */
+.btn {
+    flex: 1;
+    padding: 0.95rem 0.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    outline: none;
+    box-shadow: 0 1px 4px rgba(30,34,90,0.07);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--danger-dark);
+    border: 2px solid var(--danger-light);
+}
+
+.btn-outline:hover, .btn-outline:focus {
+    background: var(--danger-light);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #d00000 60%, #b71c1c 100%);
+    color: var(--white);
+    border: none;
+}
+
+.btn-danger:hover, .btn-danger:focus {
+    background: linear-gradient(135deg, #b71c1c 60%, #d00000 100%);
+    color: #fff;
+}
 
 /* Utilidades */
-.hidden { /* Keep as is */
+.hidden {
     display: none !important;
 }
 
@@ -376,25 +431,27 @@
         margin: 0;
         border-radius: 0;
         box-shadow: none;
-        padding: var(--space-lg) var(--space-xs); /* Was 1.2rem 0.2rem 2rem 0.2rem */
+        padding: 1.2rem 0.2rem 2rem 0.2rem;
     }
-    .panic-button { /* Keep specific mobile size */
+    .panic-button {
         width: 150px;
         height: 150px;
-        font-size: var(--font-size-sm); /* Was 1rem */
+        font-size: 1rem;
     }
     .contacts-grid {
-        grid-template-columns: 1fr; /* Keep specific mobile layout */
+        grid-template-columns: 1fr;
     }
     .modal-content {
-        padding: var(--space-lg) var(--space-sm); /* Was 1.3rem 0.5rem 1rem 0.5rem */
+        padding: 1.3rem 0.5rem 1rem 0.5rem;
     }
 }
 
-/* Scrollbar moderno - removed as it's in base.css */
-
-/* Add --error-color-dark and --text-color-dark-rgb to :root in base.css or here if specific */
-:root {
-    --error-color-dark: #b71c1c; /* From original var(--danger-dark) */
-    --text-color-dark-rgb: 35,43,59; /* for #232b3b */
+/* Scrollbar moderno */
+::-webkit-scrollbar {
+    width: 8px;
+    background: #f0f2f5;
+}
+::-webkit-scrollbar-thumb {
+    background: #e3eaf2;
+    border-radius: 8px;
 }

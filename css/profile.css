@@ -1,55 +1,78 @@
-/* css/profile.css */
-/* Body style from base.css (light theme) is used by default. */
+:root {
+    --primary: #4361ee;
+    --primary-light: #eef2ff;
+    --white: #ffffff;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-500: #adb5bd;
+    --gray-800: #2b2d42;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Reset y fuentes */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  background: #f4f7fa;
+  color: #232b3b;
+  min-height: 100vh;
+}
 
 /* Header */
 .profile-header {
   display: flex;
   align-items: center;
-  padding: var(--space-md) var(--space-lg); /* Was 1.2rem 1.5rem 1rem 1.5rem, simplified */
-  background: var(--text-color-light); /* Was #fff */
-  box-shadow: var(--shadow-sm); /* Was 0 2px 12px rgba(30, 34, 90, 0.06) */
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(30, 34, 90, 0.06);
   position: sticky;
   top: 0;
-  z-index: 10; /* Keep z-index */
-  border-bottom-left-radius: var(--radius-lg); /* Was 1.2rem */
-  border-bottom-right-radius: var(--radius-lg); /* Was 1.2rem */
+  z-index: 10;
+  border-bottom-left-radius: 1.2rem;
+  border-bottom-right-radius: 1.2rem;
 }
 
-.profile-header .back-btn { /* This is an icon button */
-  color: var(--primary-color); /* Was #1976d2 */
-  margin-right: var(--space-md); /* Was 1rem */
+.profile-header .back-btn {
+  color: #1976d2;
+  margin-right: 1rem;
   text-decoration: none;
   display: flex;
   align-items: center;
-  font-size: calc(var(--font-size-base) * 1.7); /* Was 2rem */
-  transition: color var(--transition-short);
-  background: none; border: none; padding: var(--space-xs); border-radius: var(--radius-full);
+  font-size: 2rem;
+  transition: color 0.2s;
 }
 
-.profile-header .back-btn:hover, .profile-header .back-btn:focus-visible {
-  color: var(--primary-color-dark); /* Was #125ea7 */
-  background-color: var(--primary-color-light);
-  outline: none;
+.profile-header .back-btn:hover {
+  color: #125ea7;
 }
 
 .profile-header h1 {
-  font-size: var(--font-size-h3); /* Was 1.6rem */
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -1px; /* Keep specific style */
-  color: var(--text-color-dark);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -1px;
 }
 
 /* Main container */
 .profile-container {
-  max-width: 420px; /* Keep specific max-width */
-  margin: var(--space-xl) auto 0 auto; /* Was 2.5rem auto 0 auto */
-  background: var(--text-color-light); /* Was #fff */
-  border-radius: var(--radius-xl, 24px); /* Was 1.5rem, using a new var or specific value */
-  box-shadow: var(--shadow-lg); /* Was 0 8px 32px rgba(30, 34, 90, 0.10) */
-  padding: var(--space-xl) var(--space-lg); /* Was 2.2rem 1.5rem 2.5rem 1.5rem */
+  max-width: 420px;
+  margin: 2.5rem auto 0 auto;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(30, 34, 90, 0.10);
+  padding: 2.2rem 1.5rem 2.5rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl); /* Was 2.5rem */
+  gap: 2.5rem;
   position: relative;
 }
 
@@ -57,210 +80,236 @@
 .user-info-section {
   display: flex;
   align-items: center;
-  gap: var(--space-lg); /* Was 1.7rem */
-  margin-bottom: var(--space-sm); /* Was 0.5rem */
+  gap: 1.7rem;
+  margin-bottom: 0.5rem;
 }
 
 .user-avatar {
   position: relative;
-  width: 98px; /* Keep specific size */
+  width: 98px;
   height: 98px;
   min-width: 98px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--primary-color-light) 60%, var(--background-light) 100%); /* Was #e3eaf2, #f7f9fb */
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-md); /* Was 0 4px 18px rgba(25, 118, 210, 0.10) */
-  overflow: visible; /* Keep for edit button positioning */
+  background: linear-gradient(135deg, #e3eaf2 60%, #f7f9fb 100%);
+  border-radius: 50%;
+  box-shadow: 0 4px 18px rgba(25, 118, 210, 0.10);
+  overflow: visible;
 }
 
 .user-avatar img {
-  width: 88px; /* Keep specific size */
+  width: 88px;
   height: 88px;
   object-fit: cover;
-  border-radius: var(--radius-full);
-  border: 4px solid var(--text-color-light); /* Was #fff */
-  background: var(--primary-color-light); /* Was #f0f2f5 */
-  box-shadow: var(--shadow-sm); /* Was 0 2px 8px rgba(25, 118, 210, 0.10) */
-  transition: filter var(--transition-short);
+  border-radius: 50%;
+  border: 4px solid #fff;
+  background: #f0f2f5;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+  transition: filter 0.2s;
 }
 
 .user-avatar img:active {
-  filter: brightness(0.95); /* Keep specific interaction */
+  filter: brightness(0.95);
 }
 
-.edit-avatar-btn { /* This is a specific icon button */
+.edit-avatar-btn {
   position: absolute;
   bottom: 0;
-  right: -8px; /* Keep specific positioning */
-  background: linear-gradient(135deg, var(--primary-color) 60%, var(--primary-color-dark) 100%);
-  color: var(--text-color-light);
+  right: -8px;
+  background: linear-gradient(135deg, #1976d2 60%, #0d47a1 100%);
+  color: #fff;
   border: none;
-  border-radius: var(--radius-full);
-  width: 38px; /* Keep specific size */
+  border-radius: 50%;
+  width: 38px;
   height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: var(--shadow-md); /* Was 0 2px 8px rgba(25, 118, 210, 0.18) */
-  transition: background var(--transition-short), transform var(--transition-short);
-  border: 3px solid var(--text-color-light); /* Was #fff */
-  font-size: calc(var(--font-size-base) * 1.2); /* Was 1.4rem */
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.18);
+  transition: background 0.2s, transform 0.2s;
+  border: 3px solid #fff;
+  font-size: 1.4rem;
 }
 
 .edit-avatar-btn:hover {
-  background: linear-gradient(135deg, var(--primary-color-dark) 60%, var(--primary-color) 100%);
-  transform: scale(1.08); /* Keep specific interaction */
+  background: linear-gradient(135deg, #125ea7 60%, #1976d2 100%);
+  transform: scale(1.08);
 }
-.edit-avatar-btn:focus-visible {
-    outline: var(--border-width-thick) solid var(--primary-color-dark);
-    transform: scale(1.08);
-}
-
 
 .user-details {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-xxs); /* Was 0.18rem */
+  gap: 0.18rem;
 }
 
 .user-details h2 {
-  font-size: var(--font-size-h4); /* Was 1.25rem */
-  font-weight: var(--font-weight-bold);
-  color: var(--text-color-dark); /* Was #232b3b */
-  margin-bottom: var(--space-xxs); /* Was 0.1rem */
-  letter-spacing: -0.5px; /* Keep specific style */
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #232b3b;
+  margin-bottom: 0.1rem;
+  letter-spacing: -0.5px;
 }
 
 .user-code,
 .user-email,
 .user-career,
 .user-role {
-  font-size: var(--font-size-base); /* Was 1.01rem */
-  color: var(--text-color-muted-dark); /* Was #5a6a85 */
-  margin-top: var(--space-xxs); /* Was 0.08rem */
-  word-break: break-all; /* Keep specific style */
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.1px; /* Keep specific style */
+  font-size: 1.01rem;
+  color: #5a6a85;
+  margin-top: 0.08rem;
+  word-break: break-all;
+  font-weight: 500;
+  letter-spacing: 0.1px;
 }
 
 /* Barcode Section */
 .barcode-section {
-  background: linear-gradient(135deg, var(--background-light) 80%, var(--primary-color-light) 100%); /* Was #f5f8fc, #e3eaf2 */
-  border-radius: var(--radius-lg); /* Was 1.2rem */
-  padding: var(--space-lg) var(--space-md) var(--space-md) var(--space-md); /* Was 1.7rem 1.1rem 1.3rem 1.1rem */
-  box-shadow: var(--shadow-sm); /* Was 0 2px 12px rgba(25, 118, 210, 0.04) */
+  background: linear-gradient(135deg, #f5f8fc 80%, #e3eaf2 100%);
+  border-radius: 1.2rem;
+  padding: 1.7rem 1.1rem 1.3rem 1.1rem;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-md); /* Was 1.1rem */
-  margin-bottom: var(--space-sm); /* Was 0.5rem */
-  border: var(--border-width-medium) solid var(--primary-color-light); /* Was #e3eaf2 */
+  gap: 1.1rem;
+  margin-bottom: 0.5rem;
+  border: 1.5px solid #e3eaf2;
 }
 
-.section-header h2 { /* This style seems to be for a general section header within this card */
-  font-size: var(--font-size-lg); /* Was 1.13rem */
-  font-weight: var(--font-weight-semibold);
-  color: var(--primary-color); /* Was #1976d2 */
-  margin-bottom: var(--space-sm); /* Was 0.5rem */
-  letter-spacing: 0.2px; /* Keep specific style */
+.section-header h2 {
+  font-size: 1.13rem;
+  font-weight: 600;
+  color: #1976d2;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.2px;
 }
 
 .barcode-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-xs); /* Was 0.3rem */
+  gap: 0.3rem;
 }
 
-#barcode { /* SVG element styling */
-  width: 180px; /* Keep specific size */
+#barcode {
+  width: 180px;
   height: 60px;
-  margin-bottom: var(--space-xxs); /* Was 0.2rem */
-  background: var(--text-color-light); /* Was #fff */
-  border-radius: var(--radius-sm); /* Was 0.5rem */
-  box-shadow: var(--shadow-xs); /* Was 0 1px 6px rgba(25, 118, 210, 0.07) */
-  padding: var(--space-xs); /* Was 0.2rem 0.5rem */
+  margin-bottom: 0.2rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 6px rgba(25, 118, 210, 0.07);
+  padding: 0.2rem 0.5rem;
 }
 
 #barcodeText {
-  font-size: var(--font-size-base); /* Was 1.02rem */
-  color: var(--text-color-dark); /* Was #232b3b */
-  letter-spacing: 2px; /* Keep specific style */
-  font-weight: var(--font-weight-semibold);
+  font-size: 1.02rem;
+  color: #232b3b;
+  letter-spacing: 2px;
+  font-weight: 600;
 }
 
 .barcode-hint {
-  font-size: var(--font-size-sm); /* Was 0.97rem */
-  color: var(--text-color-muted-dark); /* Was #7b8ca7 */
-  margin-top: var(--space-xxs); /* Was 0.2rem */
+  font-size: 0.97rem;
+  color: #7b8ca7;
+  margin-top: 0.2rem;
   text-align: center;
 }
 
-/* Botones modernos - these .btn, .btn-primary, .btn-outline rules will be removed */
-/* HTML should be updated to use classes from base.css */
+/* Botones modernos */
 .barcode-actions {
   display: flex;
-  gap: var(--space-md); /* Was 1.1rem */
-  margin-top: var(--space-sm); /* Was 0.5rem */
+  gap: 1.1rem;
+  margin-top: 0.5rem;
 }
 
-/* Removed .btn, .btn-outline, .btn-primary specific to .barcode-actions as they should use base.css versions */
-/* Ensure HTML for these buttons uses: class="btn btn-outline" and class="btn btn-primary" */
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.62rem 1.4rem;
+  border-radius: 0.9rem;
+  font-size: 1.07rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+  outline: none;
+}
 
+.btn-outline {
+  background: #fff;
+  color: #1976d2;
+  border: 2px solid #1976d2;
+}
+
+.btn-outline:hover, .btn-outline:focus {
+  background: #e3eaf2;
+  color: #125ea7;
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.10);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #1976d2 60%, #0d47a1 100%);
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background: linear-gradient(135deg, #125ea7 60%, #1976d2 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.13);
+}
+
+.btn .material-icons {
+  font-size: 1.3rem;
+}
 
 /* Settings Section */
 .settings-section {
-  margin-top: var(--space-lg); /* Was 1.2rem */
+  margin-top: 1.2rem;
 }
 
 .settings-section h2 {
-  font-size: var(--font-size-lg); /* Was 1.1rem */
-  font-weight: var(--font-weight-semibold);
-  color: var(--primary-color); /* Was #1976d2 */
-  margin-bottom: var(--space-sm); /* Was 0.7rem */
-  letter-spacing: 0.2px; /* Keep specific style */
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1976d2;
+  margin-bottom: 0.7rem;
+  letter-spacing: 0.2px;
 }
 
 .settings-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm); /* Was 0.7rem */
+  gap: 0.7rem;
 }
 
-.setting-item { /* These are links styled as list items/cards */
+.setting-item {
   display: flex;
   align-items: center;
-  gap: var(--space-md); /* Was 1rem */
-  background: var(--background-light); /* Was #f7f9fb */
-  border-radius: var(--radius-md); /* Was 0.8rem */
-  padding: var(--space-md) var(--space-md); /* Was 1rem 1.1rem */
+  gap: 1rem;
+  background: #f7f9fb;
+  border-radius: 0.8rem;
+  padding: 1rem 1.1rem;
   text-decoration: none;
-  color: var(--text-color-dark); /* Was #232b3b */
-  font-size: var(--font-size-base); /* Was 1.04rem */
-  font-weight: var(--font-weight-medium);
-  transition: background-color var(--transition-short), box-shadow var(--transition-short);
-  box-shadow: var(--shadow-xs); /* Was 0 1px 4px rgba(25, 118, 210, 0.04) */
+  color: #232b3b;
+  font-size: 1.04rem;
+  font-weight: 500;
+  transition: background 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 4px rgba(25, 118, 210, 0.04);
 }
 
-.setting-item:hover, .setting-item:focus-visible {
-  background: var(--primary-color-light); /* Was #e3eaf2 */
-  box-shadow: var(--shadow-sm); /* Was 0 2px 8px rgba(25, 118, 210, 0.09) */
-  color: var(--primary-color-dark);
-  outline: none;
+.setting-item:hover, .setting-item:focus {
+  background: #e3eaf2;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.09);
 }
-.setting-item:focus-visible {
-    outline: var(--border-width-medium) solid var(--primary-color-dark);
-    outline-offset: 1px;
-}
-
 
 .setting-item .material-icons {
-  color: var(--primary-color); /* Was #1976d2 */
-  font-size: calc(var(--font-size-base) * 1.3); /* Was 1.5rem */
+  color: #1976d2;
+  font-size: 1.5rem;
 }
 
 /* Responsive Design */
@@ -270,35 +319,38 @@
     margin: 0;
     border-radius: 0;
     box-shadow: none;
-    padding: var(--space-lg) var(--space-xs); /* Was 1.2rem 0.2rem 2rem 0.2rem */
+    padding: 1.2rem 0.2rem 2rem 0.2rem;
   }
   .user-info-section {
-    flex-direction: column; /* Keep specific mobile layout */
+    flex-direction: column;
     align-items: center;
-    gap: var(--space-md); /* Was 1.1rem */
+    gap: 1.1rem;
   }
   .user-avatar {
-    margin-bottom: var(--space-sm); /* Was 0.5rem */
+    margin-bottom: 0.5rem;
   }
   .barcode-section {
-    padding: var(--space-md) var(--space-xs); /* Was 1.1rem 0.3rem 1rem 0.3rem */
+    padding: 1.1rem 0.3rem 1rem 0.3rem;
   }
   .settings-section {
-    margin-top: var(--space-md); /* Was 1rem */
+    margin-top: 1rem;
   }
 }
 
-/* Animaciones sutiles - Transition is now on individual elements or base.css */
-/* .profile-container,
+/* Animaciones sutiles */
+.profile-container,
 .barcode-section,
 .setting-item,
 .btn {
   transition: box-shadow 0.18s, background 0.18s, color 0.18s;
-} */
+}
 
-/* Scrollbar moderno - removed as it's in base.css */
-
-/* Add --radius-xl if not in base.css and desired */
-:root {
-    --radius-xl: 24px;
+/* Scrollbar moderno */
+::-webkit-scrollbar {
+  width: 8px;
+  background: #f0f2f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #e3eaf2;
+  border-radius: 8px;
 }

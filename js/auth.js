@@ -1,201 +1,163 @@
 class AuthUI {
     constructor() {
         this.form = document.getElementById('loginForm');
-        this.emailInput = document.getElementById('correo'); // Assuming id="correo" from index.html
-        this.passwordInput = document.getElementById('contrasena'); // Assuming id="contrasena" from index.html
-        this.submitBtn = this.form ? this.form.querySelector('button[type="submit"]') : null;
-        this.errorDiv = document.getElementById('error-message'); // Ensure this ID is in index.html
-
-        // Password toggle elements
-        this.togglePwdButton = this.form ? this.form.querySelector('.toggle-pwd') : null;
-        this.pwdIcon = this.togglePwdButton ? this.togglePwdButton.querySelector('span.material-icons') : null;
-
+        this.emailInput = document.getElementById('email');
+        this.passwordInput = document.getElementById('password');
+        this.submitBtn = document.querySelector('.btn');
+        this.errorDiv = document.getElementById('error-message');
         this.init();
     }
 
     init() {
-        if (!this.form) {
-            // console.warn('Login form not found. AuthUI will not initialize.');
-            return;
-        }
         this.setupEventListeners();
-        // Floating labels are CSS-driven based on :not(:placeholder-shown) in the new base.css
-        // so initFloatingLabels might not be needed if placeholders are set correctly.
         this.initFloatingLabels();
     }
 
     setupEventListeners() {
-        if (this.emailInput) {
-            this.emailInput.addEventListener('input', this.validateEmail.bind(this));
-        }
-        if (this.passwordInput) {
-            this.passwordInput.addEventListener('input', this.validatePassword.bind(this));
-        }
+        // Validación en tiempo real
+        this.emailInput.addEventListener('input', this.validateEmail.bind(this));
+        this.passwordInput.addEventListener('input', this.validatePassword.bind(this));
         
-        if (this.togglePwdButton && this.passwordInput && this.pwdIcon) { // Added null check for pwdIcon
-            this.togglePwdButton.addEventListener('click', this.togglePasswordVisibility.bind(this));
-        }
+        // Toggle password
+        document.querySelector('.toggle-pwd').addEventListener('click', this.togglePasswordVisibility.bind(this));
         
+        // Submit del formulario
         this.form.addEventListener('submit', this.handleSubmit.bind(this));
     }
 
     initFloatingLabels() {
-        if (this.emailInput && this.emailInput.value) {
-            if(this.emailInput.placeholder !== " ") this.emailInput.placeholder = " ";
+        // Inicializar labels flotantes
+        if (this.emailInput.value) {
+            this.emailInput.dispatchEvent(new Event('input'));
         }
-        if (this.passwordInput && this.passwordInput.value) {
-            if(this.passwordInput.placeholder !== " ") this.passwordInput.placeholder = " ";
+        if (this.passwordInput.value) {
+            this.passwordInput.dispatchEvent(new Event('input'));
         }
     }
 
     validateEmail() {
-        if (!this.emailInput) return false;
         const email = this.emailInput.value.trim();
         const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         
         if (!email) {
-            this.showInlineError(this.emailInput, 'El correo es requerido');
+            this.showError(this.emailInput, 'El correo es requerido');
             return false;
         }
+        
         if (!isValid) {
-            this.showInlineError(this.emailInput, 'Ingresa un correo válido');
+            this.showError(this.emailInput, 'Ingresa un correo válido');
             return false;
         }
-        this.clearInlineError(this.emailInput);
+        
+        this.clearError(this.emailInput);
         return true;
     }
 
     validatePassword() {
-        if (!this.passwordInput) return false;
         const password = this.passwordInput.value;
         
         if (!password) {
-            this.showInlineError(this.passwordInput, 'La contraseña es requerida');
+            this.showError(this.passwordInput, 'La contraseña es requerida');
             return false;
         }
+        
         if (password.length < 8) {
-            this.showInlineError(this.passwordInput, 'Mínimo 8 caracteres');
+            this.showError(this.passwordInput, 'Mínimo 8 caracteres');
             return false;
         }
-        this.clearInlineError(this.passwordInput);
+        
+        this.clearError(this.passwordInput);
         return true;
     }
 
     togglePasswordVisibility() {
-        if (this.passwordInput.type === "password") {
-            this.passwordInput.type = "text";
-            if (this.pwdIcon) this.pwdIcon.textContent = "visibility";
-        } else {
-            this.passwordInput.type = "password";
-            if (this.pwdIcon) this.pwdIcon.textContent = "visibility_off";
-        }
+        const isPassword = this.passwordInput.type === 'password';
+        this.passwordInput.type = isPassword ? 'text' : 'password';
+        this.querySelector('span').textContent = isPassword ? 'visibility' : 'visibility_off';
     }
 
     async handleSubmit(e) {
         e.preventDefault();
 
-        if (this.errorDiv) {
-            UIUtils.hideMessage(this.errorDiv);
-        }
+        // Limpiar mensaje de error general
+        this.errorDiv.style.display = 'none';
+        this.errorDiv.textContent = '';
 
-        const isEmailValid = this.validateEmail(); // Uses showInlineError
-        const isPasswordValid = this.validatePassword(); // Uses showInlineError
+        const isEmailValid = this.validateEmail();
+        const isPasswordValid = this.validatePassword();
 
         if (!isEmailValid || !isPasswordValid) return;
 
-        UIUtils.setButtonLoading(this.submitBtn, true, "Ingresando...");
-
         try {
-            // ApiService could be used here for further abstraction if desired.
-            const response = await fetch('http://localhost:3001/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    correo: this.emailInput.value.trim(),
-                    contrasena: this.passwordInput.value
-                })
+            this.setLoading(true);
+
+            // Simular autenticación
+            await this.authenticate({
+                email: this.emailInput.value.trim(),
+                password: this.passwordInput.value
             });
 
-            // Try to parse JSON regardless of response.ok, as backend might send JSON error details
-            let data;
-            try {
-                data = await response.json();
-            } catch (jsonError) {
-                // If JSON parsing fails (e.g. HTML error page), create a generic error
-                throw new Error(`Error ${response.status}: ${response.statusText}. No se pudo procesar la respuesta del servidor.`);
-            }
-
-            if (!response.ok) {
-                throw new Error(data.error || `Error ${response.status}: ${response.statusText}`);
-            }
-
-            if (data.usuario) {
-                const { contrasena, ...userDataToStore } = data.usuario; // Exclude password
-                localStorage.setItem('currentUser', JSON.stringify(userDataToStore));
-                window.location.href = 'dashboard.html';
-            } else {
-                throw new Error(data.error || 'Respuesta inválida del servidor.');
-            }
+            // Redireccionar
+            window.location.href = 'dashboard.html';
 
         } catch (error) {
-            if (this.errorDiv) {
-                UIUtils.displayMessage(this.errorDiv, error.message || 'Ocurrió un error. Por favor, intente más tarde.', 'error');
-            } else {
-                // Fallback if specific error div is not found
-                UIUtils.showToast(error.message || 'Ocurrió un error. Por favor, intente más tarde.', 'error');
-            }
+            // Mostrar error general en el div
+            this.errorDiv.textContent = error.message;
+            this.errorDiv.style.display = 'block';
         } finally {
-            UIUtils.setButtonLoading(this.submitBtn, false);
+            this.setLoading(false);
         }
     }
 
-    // Using UIUtils for main error, these are for inline validation errors
-    showInlineError(inputElement, message) {
-        const inputGroup = inputElement.closest('.form-group');
-        if (!inputGroup) return;
+    async authenticate(credentials) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // Solo acepta este usuario demo
+                if (
+                    credentials.email === 'admin@ejemplo.com' &&
+                    credentials.password === '12345678'
+                ) {
+                    resolve({ token: 'fake-jwt-token' });
+                } else {
+                    reject(new Error('Correo o contraseña incorrectos.'));
+                }
+            }, 1000);
+        });
+    }
 
-        let errorElement = inputGroup.querySelector('.error-message-inline');
-        if (!errorElement) {
-            errorElement = document.createElement('span');
-            errorElement.className = 'error-message-inline';
-            inputGroup.appendChild(errorElement);
+    setLoading(isLoading) {
+        if (isLoading) {
+            this.submitBtn.classList.add('loading');
+            this.submitBtn.disabled = true;
+        } else {
+            this.submitBtn.classList.remove('loading');
+            this.submitBtn.disabled = false;
         }
-        inputGroup.classList.add('has-error'); // Optional: class to style the input field itself
+    }
+
+    showError(input, message) {
+        const inputGroup = input.closest('.input-group');
+        const errorElement = inputGroup.querySelector('.error-message') || this.createErrorElement(inputGroup);
+        inputGroup.classList.add('error');
         errorElement.textContent = message;
-        errorElement.style.display = 'block';
     }
 
-    clearInlineError(inputElement) {
-        const inputGroup = inputElement.closest('.form-group');
-        if (!inputGroup) return;
+    createErrorElement(inputGroup) {
+        const errorElement = document.createElement('span');
+        errorElement.className = 'error-message';
+        inputGroup.appendChild(errorElement);
+        return errorElement;
+    }
 
-        inputGroup.classList.remove('has-error');
-        const errorElement = inputGroup.querySelector('.error-message-inline');
-        if (errorElement) {
-            errorElement.textContent = '';
-            errorElement.style.display = 'none';
-        }
+    clearError(input) {
+        const inputGroup = input.closest('.input-group');
+        inputGroup.classList.remove('error');
+        const errorElement = inputGroup.querySelector('.error-message');
+        if (errorElement) errorElement.textContent = '';
     }
 }
-// Make sure UIUtils is imported at the top of this file.
-// import { UIUtils } from '../utils/UIUtils.js'; // Path might need adjustment
 
+// Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById('loginForm')) {
-        new AuthUI();
-    }
+    new AuthUI();
 });
-
-// CSS for .error-message-inline and .form-group.has-error should be in base.css or auth.css
-/*
-.error-message-inline {
-    color: var(--error-color);
-    font-size: var(--font-size-sm);
-    display: block;
-    margin-top: var(--space-xs);
-}
-.form-group.has-error .form-control {
-    border-color: var(--error-color);
-    box-shadow: 0 0 0 0.2rem rgba(var(--error-color-rgb), 0.25); // Optional focus-like error state
-}
-*/
