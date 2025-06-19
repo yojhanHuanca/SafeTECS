@@ -1,0 +1,183 @@
+/* css/scan_access.css */
+
+/* Assuming body class like .page-background-light is set in HTML for light theme from base.css */
+/* Or, if scan page specifically needs a dark theme:
+body.scan-access-page {
+    background-color: var(--background-dark-gradient-start);
+    color: var(--text-color-light);
+}
+body.scan-access-page .app-header-simple h1 { color: var(--text-color-light); }
+body.scan-access-page .app-header-simple .back-btn-header { color: var(--text-color-light); }
+*/
+
+
+/* Simplified Header for scan page */
+.app-header-simple {
+    display: flex;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    background-color: var(--primary-color); /* Or var(--background-glass-light) with backdrop-filter */
+    color: var(--text-color-light);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--space-lg);
+}
+
+.app-header-simple .back-btn-header {
+    color: var(--text-color-light);
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: var(--space-xs); /* Ensure it's clickable */
+}
+.app-header-simple .back-btn-header:hover,
+.app-header-simple .back-btn-header:focus-visible {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.app-header-simple h1 {
+    font-size: var(--font-size-h4);
+    color: var(--text-color-light);
+    margin: 0 0 0 var(--space-md);
+    flex-grow: 1;
+    text-align: center;
+}
+
+
+.scan-container {
+    max-width: 600px; /* Max width for content */
+    margin: 0 auto;
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.scanner-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+.event-type-selector {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.event-type-selector input[type="radio"] {
+    display: none; /* Hide actual radio button */
+}
+
+.event-type-selector label.btn { /* Style labels as buttons */
+    cursor: pointer;
+    padding: var(--space-sm) var(--space-lg);
+    border-color: var(--primary-color-light);
+    color: var(--primary-color);
+}
+.event-type-selector input[type="radio"]:checked + label.btn {
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
+    border-color: var(--primary-color);
+}
+.event-type-selector label.btn:hover {
+    background-color: var(--primary-color-light);
+}
+.event-type-selector input[type="radio"]:checked + label.btn:hover {
+    background-color: var(--primary-color-dark);
+}
+.event-type-selector input[type="radio"]:focus-visible + label.btn {
+    outline: 2px solid var(--primary-color-dark);
+    outline-offset: 2px;
+}
+
+
+#scanner-container {
+    width: 100%;
+    max-width: 500px; /* Limit scanner width */
+    height: auto; /* Adjust as needed, or set a fixed height */
+    min-height: 250px; /* Minimum height for visibility */
+    margin: 0 auto;
+    position: relative; /* Crucial for Quagga's overlay canvas */
+    background-color: var(--text-color-muted-dark); /* Dark background for contrast */
+    border-radius: var(--radius-md);
+    overflow: hidden; /* To contain the video/canvas elements */
+    box-shadow: var(--shadow-inner, inset 0 2px 4px rgba(0,0,0,0.1)); /* Optional inner shadow */
+}
+
+#scanner-container .scanner-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 250px; /* Match container min-height */
+    color: var(--text-color-muted-light);
+}
+#scanner-container .scanner-placeholder .material-icons {
+    font-size: 4rem;
+    margin-bottom: var(--space-sm);
+}
+
+
+/* QuaggaJS injects a video and multiple canvas elements into the target */
+#scanner-container > video,
+#scanner-container > canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Or 'contain' depending on desired behavior */
+    position: absolute; /* For overlaying canvas */
+    top: 0;
+    left: 0;
+}
+
+/* The drawingBuffer canvas should be on top */
+#scanner-container > canvas.drawingBuffer {
+    z-index: 10;
+}
+
+
+#scanner-feedback { /* For messages like "Scanner active..." */
+    text-align: center;
+    font-weight: var(--font-weight-medium);
+}
+
+.scan-results-area {
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    background-color: var(--background-light);
+    border: 1px solid var(--primary-color-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.scan-results-area h3 {
+    font-size: var(--font-size-lg);
+    color: var(--primary-color);
+    margin-bottom: var(--space-xs);
+}
+
+#scanned-code-result, #user-scanned-info {
+    font-size: var(--font-size-base);
+    color: var(--text-color-dark);
+    padding: var(--space-sm);
+    background-color: var(--text-color-light);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--primary-color-light);
+    min-height: 2em; /* Ensure space for text */
+    word-break: break-all; /* Prevent long codes from breaking layout */
+}
+
+#user-scanned-info {
+    margin-top: var(--space-sm);
+}
+
+/* Ensure buttons have icons aligned if .btn-text and .material-icons are used */
+.btn .material-icons {
+    margin-right: var(--space-xs);
+    vertical-align: middle; /* Better alignment */
+}
+.btn .spinner {
+    margin-right: var(--space-xs); /* If spinner is used with text */
+}

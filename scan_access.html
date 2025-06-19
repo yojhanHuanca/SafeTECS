@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Escanear Código - SafeTECS</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/scan_access.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="page-background-light"> <!-- Or a specific class if dark theme needed -->
+
+    <!-- Header -->
+    <header class="app-header-simple"> <!-- Using a simpler header style, can be defined in scan_access.css or base.css -->
+        <a href="dashboard.html" class="btn btn-icon back-btn-header"> <!-- Re-using .btn classes -->
+            <span class="material-icons">arrow_back</span>
+        </a>
+        <h1>Registrar Acceso por Escaneo</h1>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="scan-container">
+        <div id="page-error-message" class="error-message" style="display:none; margin-bottom: var(--space-lg);"></div>
+
+        <div class="scanner-controls">
+            <div class="event-type-selector">
+                <input type="radio" name="event_type" id="event-type-entry" value="entry" checked>
+                <label for="event-type-entry" class="btn btn-outline">Entrada</label>
+
+                <input type="radio" name="event_type" id="event-type-exit" value="exit">
+                <label for="event-type-exit" class="btn btn-outline">Salida</label>
+            </div>
+
+            <button id="start-scan-btn" class="btn btn-primary">
+                <span class="material-icons">qr_code_scanner</span>
+                <span class="btn-text">Iniciar Escaneo</span>
+                <span class="spinner"></span>
+            </button>
+            <button id="stop-scan-btn" class="btn btn-danger" style="display:none;">
+                <span class="material-icons">stop_circle</span>
+                <span class="btn-text">Detener Escaneo</span>
+                <span class="spinner"></span>
+            </button>
+        </div>
+
+        <div id="scanner-container">
+            <!-- QuaggaJS will render camera stream and canvas overlays here -->
+            <!-- Add a placeholder visual or text if desired -->
+            <div class="scanner-placeholder">
+                <span class="material-icons">videocam_off</span>
+                <p>El scanner está apagado.</p>
+            </div>
+        </div>
+
+        <div id="scanner-feedback" class="info-message" style="margin-top: var(--space-md); display:none;"></div>
+
+        <div class="scan-results-area">
+            <h3>Último Código Escaneado:</h3>
+            <p id="scanned-code-result">- Ninguno -</p>
+            <h3>Información del Usuario:</h3>
+            <div id="user-scanned-info" style="margin-top: var(--space-sm); min-height: 50px;">
+                - Esperando escaneo -
+            </div>
+        </div>
+
+    </main>
+
+    <script src="js/lib/quagga.min.js"></script>
+    <script src="js/scan_access.js" type="module"></script>
+    <!-- ApiService.js and UIUtils.js are imported by scan_access.js -->
+</body>
+</html>
